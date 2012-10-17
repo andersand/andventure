@@ -4,6 +4,7 @@ import net.andersand.andventure.Const;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.model.LevelListener;
 import net.andersand.andventure.model.Position;
+import org.newdawn.slick.Image;
 
 import java.lang.*;
 
@@ -16,6 +17,12 @@ public abstract class Creature extends Element {
     
     private Position goal;
     protected LevelListener levelListener;
+    Image image;
+
+    protected String equipmentString;
+    protected int attack;
+    protected int defense;
+    protected boolean dead;
 
     @Override
     protected void preDraw() {
@@ -29,6 +36,10 @@ public abstract class Creature extends Element {
 
     public void setLevelListener(LevelListener levelListener) {
         this.levelListener = levelListener;
+    }
+
+    public String getEquipmentString() {
+        return equipmentString;
     }
 
     /**
@@ -75,6 +86,9 @@ public abstract class Creature extends Element {
      *    - If creature is anchored to a position (ie guarding) it will not stray far from that
      */
     public void move() {
+        if (dead) {
+            return;
+        }
         if (goal == null) {
             // no goal means idling
             boolean willAttemptMove = Math.random() < Const.AI_IDLE_CHANCE_TO_MOVE;
@@ -91,4 +105,62 @@ public abstract class Creature extends Element {
             }
         }
     }
+    
+    public void interact(Element subjectElement) {
+        if (subjectElement instanceof Creature) {
+            Creature subject = (Creature) subjectElement;
+            subject.doInteraction();
+        }
+    }
+
+    /**
+     * Some creatures can be interacted with, eg Neutral, and should have an 
+     * implementation og this method.
+     */
+    protected abstract void doInteraction();
+
+    public void attack(Element subjectElement) {
+        if (subjectElement instanceof Creature) {
+            Creature subject = (Creature) subjectElement;
+            int attack = attack();
+            subject.defend(attack);
+            // todo impl. counter-attack
+        }
+    }
+    
+    @Override
+    public Image getImage() {
+        return image;
+    }
+
+    private int calculateDefense(String equipmentString) {
+        int defense = 0;
+        if (equipmentString.contains("a")) {
+            defense++;
+        }
+        if (equipmentString.contains("h")) {
+            defense++;
+        }
+        return defense;
+    }
+    
+    protected void initAttackDefense() {
+        attack = equipmentString.contains("s") ? 2 : 1;
+        defense = calculateDefense(equipmentString);
+    }
+
+    public void defend(int attack) {
+        if (defense < attack) {
+            setDeadImage();
+            dead = true;
+        }
+    }
+
+    protected int attack() {
+        return attack;
+    }
+    
+    protected abstract void setDeadImage();
+
+
 }

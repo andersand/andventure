@@ -17,7 +17,8 @@ public class Wall extends Structure {
 
     @Override
     public void init(char levelDataChar) {
-        image = Util.loadElementImage("w");
+        String partialFileName = levelDataChar == 'w' ? "ws" : "ww";
+        image = Util.loadElementImage(partialFileName);
         if (propertyHolder.getBoolean("settings.rotateWalls")) {
             int angle = Util.random(4) * 90;
             image.rotate(angle);

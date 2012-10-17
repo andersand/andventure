@@ -33,6 +33,7 @@ public class LevelParser {
             elementLookupTable.put(" ", Floor.class);
         }
         elementLookupTable.put("w", Wall.class);
+        elementLookupTable.put("W", Wall.class);
         elementLookupTable.put("p", Player.class);
         elementLookupTable.put("f", Foe.class);
         elementLookupTable.put("n", Neutral.class);
@@ -40,11 +41,13 @@ public class LevelParser {
         elementLookupTable.put("-", Door.class);
         elementLookupTable.put("r", Ring.class);
         elementLookupTable.put("c", Corpse.class);
+        elementLookupTable.put("t", Tree.class);
         try {
             metaLookupTable.put("name", Meta.class.getField("name"));
             metaLookupTable.put("description", Meta.class.getField("description"));
             metaLookupTable.put("objectives", Meta.class.getField("objectives"));
             metaLookupTable.put("equipment", Meta.class.getField("equipment"));
+            metaLookupTable.put("environment", Meta.class.getField("environment"));
         }
         catch (NoSuchFieldException e) {
             e.printStackTrace();

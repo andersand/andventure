@@ -45,4 +45,8 @@ public class Position {
         }
         return super.equals(obj);
     }
+
+    public Position copy() {
+        return new Position(this, 0, 0);
+    }
 }

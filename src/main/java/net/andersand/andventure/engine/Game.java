@@ -22,7 +22,6 @@ public class Game extends BasicGame {
     protected LevelLoader levelLoader;
     protected Controller controller;
     protected AppGameContainer appGameContainer;
-    protected List<Tile> floorTiles = new ArrayList<Tile>();
 
     public Game() {
         super(Const.GAME_TITLE);
@@ -31,13 +30,12 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         propertyHolder = new PropertyHolder();
-        controller = new Controller();
+        controller = new Controller(propertyHolder);
         levelLoader = new LevelLoader(propertyHolder);
         Bounds bounds = levelLoader.loadLevels();
         controller.setWindowBounds(setWindowSize(bounds));
         controller.setLevels(levelLoader.getLevels());
         controller.startGame();
-        initBackground(bounds);
     }
 
     private Bounds setWindowSize(Bounds bounds) throws SlickException {
@@ -49,30 +47,6 @@ public class Game extends BasicGame {
         }
         appGameContainer.setDisplayMode(bounds.width, bounds.height, false);
         return bounds;
-    }
-
-    // todo MID incorporate floor type into level metadata (stone/wood for interior, dirt/grass for exterior)
-    // this will allow for outdoor levels
-    private void initBackground(Bounds bounds) {
-        if (!propertyHolder.getBoolean("settings.floorAsElements")) {
-            int floorTilesHoriz = bounds.width / Const.BGTILE_SIZE_PIXELS;
-            int floorTilesVert = bounds.height / Const.BGTILE_SIZE_PIXELS;
-            for (int i = 0; i <= floorTilesHoriz; i++) {
-                for (int j = 0; j <= floorTilesVert; j++) {
-                    Image image = Util.loadImage("backgrounds/floor.png");
-                    image.rotate(Util.random(4) * 90);
-                    Tile tile = new Tile(image);
-                    tile.setPosition(new Position(i, j));
-                    floorTiles.add(tile);
-                }
-            }
-        }
-    }
-
-    private void drawFloorTiles() {
-        for (Tile tile : floorTiles) {
-            tile.render();
-        }
     }
 
     @Override
@@ -104,7 +78,7 @@ public class Game extends BasicGame {
 
     private void renderBackground() {
         if (!propertyHolder.getBoolean("settings.floorAsElements")) {
-            drawFloorTiles();
+            controller.getGui().renderBackground();
         }
     }
 

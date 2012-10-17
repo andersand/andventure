@@ -103,8 +103,7 @@ public class Util {
 
     public static Font loadFont(String fntFile, String imgFile) {
         try {
-            AngelCodeFont font = new AngelCodeFont(fntFile, imgFile);
-            return font;
+            return new AngelCodeFont(fntFile, imgFile);
         }
         catch (SlickException e) {
             e.printStackTrace();

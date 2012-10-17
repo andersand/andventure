@@ -7,19 +7,7 @@ import org.newdawn.slick.Image;
  * @author asn
  */
 public class Foe extends Creature {
-
-    private String equipmentString;
-    Image image;
     
-    @Override
-    public Image getImage() {
-        return image;
-    }
-
-    public String getEquipmentString() {
-        return equipmentString;
-    }
-
     public void setEquipmentString(String equipmentString) {
         this.equipmentString = equipmentString;
     }
@@ -29,6 +17,16 @@ public class Foe extends Creature {
         equipmentString = Util.randomizeEquipment();
         String partialFileName = "".equals(equipmentString) ? "en" : "en_" + equipmentString;
         image = Util.loadElementImage(partialFileName);
+        initAttackDefense();
     }
 
+    @Override
+    protected void doInteraction() {
+        // Intentionally empty: Foes can only be attacked for now
+    }
+
+    @Override
+    protected void setDeadImage() {
+        image = Util.loadElementImage("en_dead");
+    }
 }

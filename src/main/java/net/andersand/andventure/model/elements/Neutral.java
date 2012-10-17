@@ -1,9 +1,8 @@
 package net.andersand.andventure.model.elements;
 
-import net.andersand.andventure.Const;
 import net.andersand.andventure.Util;
+import net.andersand.andventure.model.Script;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 
 /**
  * Neutrals can be either passive or NPCs
@@ -11,16 +10,21 @@ import org.newdawn.slick.SlickException;
  * @author asn
  */
 public class Neutral extends Creature {
-
-    private Image image;
-
-    @Override
-    public Image getImage() {
-        return image;
-    }
+    
+    protected Script script;
 
     @Override
     public void init(char levelDataChar) {
         image = Util.loadElementImage("n");
+        script = levelListener.getMeta().getScriptForNPC(position);
+    }
+
+    @Override
+    protected void doInteraction() {
+        // todo: NPC script triggering here
+    }
+
+    @Override
+    protected void setDeadImage() {
     }
 }

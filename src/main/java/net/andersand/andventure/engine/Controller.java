@@ -3,6 +3,7 @@ package net.andersand.andventure.engine;
 import net.andersand.andventure.Const;
 import net.andersand.andventure.GameState;
 import net.andersand.andventure.GameStateListener;
+import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.Level;
@@ -28,6 +29,11 @@ public class Controller implements GameStateListener {
     private Bounds windowBounds;
     private GUI gui;
     private GameState gameState;
+    private PropertyHolder propertyHolder;
+
+    public Controller(PropertyHolder propertyHolder) {
+        this.propertyHolder = propertyHolder;
+    }
 
     public Level getCurrentLevel() {
         return currentLevel;
@@ -38,7 +44,7 @@ public class Controller implements GameStateListener {
     }
     
     public void startGame() {
-        gui = new GUI(this);
+        gui = new GUI(this, propertyHolder);
         gotoNextLevel();
         gui.setBriefingPosition(calculatePositionForBriefing());
         gameState = GameState.BRIEFING;
@@ -47,7 +53,7 @@ public class Controller implements GameStateListener {
     public void gotoNextLevel() {
         currentLevel = levels.get(nextLevelIndex++);
         player = currentLevel.getPlayer();
-        gui.createBriefing(currentLevel);
+        gui.initLevel(windowBounds, currentLevel);
         gameState = GameState.BRIEFING;
     }
     

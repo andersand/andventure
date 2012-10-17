@@ -6,9 +6,9 @@ import org.newdawn.slick.Image;
 /**
  * @author asn
  */
-public class Corpse extends Object {
+public class Tree extends Structure {
     
-    private Image image;
+    protected Image image;
     
     @Override
     public Image getImage() {
@@ -17,11 +17,6 @@ public class Corpse extends Object {
 
     @Override
     public void init(char levelDataChar) {
-        image = Util.loadElementImage("nd");
-    }
-
-    @Override
-    public boolean isPassableNow() {
-        return true;
+        image = Util.loadElementImage("t");
     }
 }

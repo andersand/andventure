@@ -5,6 +5,7 @@ package net.andersand.andventure.engine;
  */
 public enum InteractionResult {
     
+    INTERACTION_PERFORMED,
     MOVE_PROHIBITED,
     MOVE_PERFORMED
     

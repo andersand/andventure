@@ -39,10 +39,10 @@ t                                                     ttttt
 t                 f                   t                tttt
 t                                                         t
 t                               WWWWWWWWWWWWWWW           t
-t                               W             w           t
+t                               W             W           t
 t                               W             W           t
 t                               |             W           t
-t                               W         f   W           t
+t                               W         n   W           t
 t                               W             W           t
 t                               WWWWWWWWWWWWWWW           t
 t                                                        tt
@@ -53,3 +53,5 @@ ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
 ?META name=Forest I
 ?META description=Clear the forest
 ?META objectives=defeatAllFoes
+?META environment=exterior_dirt
+?META equipment=s
