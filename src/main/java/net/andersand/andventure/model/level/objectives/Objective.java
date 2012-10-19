@@ -1,4 +1,6 @@
-package net.andersand.andventure.model.level;
+package net.andersand.andventure.model.level.objectives;
+
+import net.andersand.andventure.model.level.ObjectiveType;
 
 /**
  * Defines various mission objectives.
@@ -8,7 +10,7 @@ package net.andersand.andventure.model.level;
  * 
  * @author asn
  */
-public class Objective {
+public abstract class Objective {
     private boolean completed;
     private ObjectiveType type;
     private String value;

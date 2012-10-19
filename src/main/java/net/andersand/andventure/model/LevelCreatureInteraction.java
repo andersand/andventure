@@ -6,7 +6,7 @@ import net.andersand.andventure.model.level.Meta;
 /**
  * @author asn
  */
-public interface LevelListener {
+public interface LevelCreatureInteraction {
     
     Element look(Position position);
     Meta getMeta();

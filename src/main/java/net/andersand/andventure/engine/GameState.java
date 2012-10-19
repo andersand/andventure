@@ -1,4 +1,4 @@
-package net.andersand.andventure;
+package net.andersand.andventure.engine;
 
 /**
  * @author asn
