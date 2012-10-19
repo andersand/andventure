@@ -2,11 +2,9 @@ package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Const;
 import net.andersand.andventure.Util;
-import net.andersand.andventure.model.LevelListener;
+import net.andersand.andventure.model.LevelCreatureInteraction;
 import net.andersand.andventure.model.Position;
 import org.newdawn.slick.Image;
-
-import java.lang.*;
 
 /**
  * Creatures move independently and may perform actions
@@ -15,8 +13,8 @@ import java.lang.*;
  */
 public abstract class Creature extends Element {
     
-    private Position goal;
-    protected LevelListener levelListener;
+    protected Position goal;
+    protected LevelCreatureInteraction levelCreatureInteraction;
     Image image;
 
     protected String equipmentString;
@@ -26,16 +24,10 @@ public abstract class Creature extends Element {
 
     @Override
     protected void preDraw() {
-        if (position == null) {
-            return;
-        }
-        if (propertyHolder.getBoolean("settings.floorAsElements")) {
-            Util.drawFloor(position);
-        }
     }
 
-    public void setLevelListener(LevelListener levelListener) {
-        this.levelListener = levelListener;
+    public void setLevelCreatureInteraction(LevelCreatureInteraction levelCreatureInteraction) {
+        this.levelCreatureInteraction = levelCreatureInteraction;
     }
 
     public String getEquipmentString() {
@@ -86,7 +78,7 @@ public abstract class Creature extends Element {
      *    - If creature is anchored to a position (ie guarding) it will not stray far from that
      */
     public void move() {
-        if (dead) {
+        if (dead || preventMove()) {
             return;
         }
         if (goal == null) {
@@ -96,16 +88,27 @@ public abstract class Creature extends Element {
                 int changeX = Math.random() < .5 ? 0 : (Math.random() < .5 ? 1 : -1);
                 int changeY = Math.random() < .5 ? 0 : (Math.random() < .5 ? 1 : -1);
                 Position destination = new Position(position, changeX, changeY);
-                // todo HIGH use InteractionHandler here
-                Element elementAtDestination = levelListener.look(destination);
+                // todo MID use InteractionHandler here?
+                Element elementAtDestination = levelCreatureInteraction.look(destination);
                 if (elementAtDestination == null) {
                     position = destination;
                 }
-                // no else block here because creatures will not idly attack/open doors/etc.
+                else if (this instanceof Foe) {
+                    // todo LOW decide what to go for: should creatures idly open doors?
+                    //         right now they just move through doors if they have been opened by someone
+                    if (elementAtDestination instanceof Door) {
+                        Door door = (Door) elementAtDestination;
+                        if (door.isPassableNow()) {
+                            position = destination;
+                        }
+                    }
+                }
             }
         }
     }
-    
+
+    protected abstract boolean preventMove();
+
     public void interact(Element subjectElement) {
         if (subjectElement instanceof Creature) {
             Creature subject = (Creature) subjectElement;
@@ -117,14 +120,14 @@ public abstract class Creature extends Element {
      * Some creatures can be interacted with, eg Neutral, and should have an 
      * implementation og this method.
      */
-    protected abstract void doInteraction();
+    protected abstract void doInteraction();    
 
     public void attack(Element subjectElement) {
         if (subjectElement instanceof Creature) {
             Creature subject = (Creature) subjectElement;
             int attack = attack();
             subject.defend(attack);
-            // todo impl. counter-attack
+            // todo MID impl. counter-attack
         }
     }
     
@@ -133,7 +136,7 @@ public abstract class Creature extends Element {
         return image;
     }
 
-    private int calculateDefense(String equipmentString) {
+    protected int calculateDefense(String equipmentString) {
         int defense = 0;
         if (equipmentString.contains("a")) {
             defense++;
@@ -158,6 +161,10 @@ public abstract class Creature extends Element {
 
     protected int attack() {
         return attack;
+    }
+    
+    public boolean isDead() {
+        return dead;
     }
     
     protected abstract void setDeadImage();

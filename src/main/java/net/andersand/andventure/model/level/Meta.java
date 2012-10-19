@@ -1,11 +1,14 @@
 package net.andersand.andventure.model.level;
 
 import net.andersand.andventure.model.Position;
-import net.andersand.andventure.model.Script;
+import net.andersand.andventure.model.level.objectives.Objective;
+import net.andersand.andventure.model.level.script.Script;
 
 import java.util.List;
 
 /**
+ * Due to the nature of java reflection, the fields must be public...
+ * 
  * @author asn
  */
 public class Meta {
@@ -14,6 +17,7 @@ public class Meta {
     public String description;
     public String equipment;
     public String environment;
+    public String debrief;
 
     public List<Objective> getObjectives() {
         return objectives;
@@ -41,5 +45,9 @@ public class Meta {
 
     public String getEnvironment() {
         return environment;
+    }
+
+    public String getDebrief() {
+        return debrief;
     }
 }

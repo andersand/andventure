@@ -8,7 +8,7 @@ import org.newdawn.slick.Image;
  */
 public class Corpse extends Object {
     
-    private Image image;
+    protected Image image;
     
     @Override
     public Image getImage() {

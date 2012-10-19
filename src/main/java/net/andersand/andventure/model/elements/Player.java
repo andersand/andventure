@@ -1,8 +1,6 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Util;
-import net.andersand.andventure.model.level.Level;
-import org.newdawn.slick.Image;
 
 /**
  * @author asn
@@ -11,7 +9,7 @@ public class Player extends Creature {
 
     @Override
     public void init(char levelDataChar) {
-        String equipment = levelListener.getMeta().getEquipment();
+        String equipment = levelCreatureInteraction.getMeta().getEquipment();
         equipmentString = equipment == null ? Util.randomizeEquipment() : equipment;
         String partialFileName = "".equals(equipmentString) ? "pl" : "pl_" + equipmentString;
         image = Util.loadElementImage(partialFileName);
@@ -19,8 +17,13 @@ public class Player extends Creature {
     }
 
     @Override
+    protected boolean preventMove() {
+        return false; // AI method, does not apply to player...
+    }
+
+    @Override
     protected void doInteraction() {
-        // todo: perhaps when a creature approaches the player he should be presented something
+        // todo LOW perhaps when a creature approaches the player he should be presented something
     }
 
     @Override

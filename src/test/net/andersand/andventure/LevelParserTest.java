@@ -15,7 +15,7 @@ import java.util.List;
 public class LevelParserTest {
 
     @Test(dataProvider = "metaDataProvider")
-    public void parseMetaDataSetsMetadataFields(List<String> metadataLines) throws IllegalAccessException {
+    public void parseMetaDataSetsMetadataFields(List<String> metadataLines) throws IllegalAccessException, InstantiationException {
         LevelParser parser = new LevelParser(new PropertyHolder());
         Meta meta = parser.parseMetaData(metadataLines);
         assert meta.getName() != null;

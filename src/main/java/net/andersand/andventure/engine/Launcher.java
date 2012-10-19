@@ -1,6 +1,5 @@
 package net.andersand.andventure.engine;
 
-import net.andersand.andventure.engine.Game;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 

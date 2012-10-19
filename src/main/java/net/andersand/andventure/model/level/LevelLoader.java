@@ -18,8 +18,10 @@ public class LevelLoader {
 
     protected LevelParser levelParser;
     protected List<Level> levels = new ArrayList<Level>();
+    protected PropertyHolder propertyHolder;
 
     public LevelLoader(PropertyHolder propertyHolder) {
+        this.propertyHolder = propertyHolder;
         levelParser = new LevelParser(propertyHolder);
     }
 
@@ -27,6 +29,9 @@ public class LevelLoader {
         return levels;
     }
 
+    /**
+     * @return The bounds of the largest map
+     */
     public Bounds loadLevels() {
         File dir = new File(Const.LEVELS_DIR);
         File[] files = dir.listFiles();
@@ -39,7 +44,7 @@ public class LevelLoader {
         for (File file : files) {
             if (file.getName().endsWith("level")) {
                 try {
-                    Level level = new Level();
+                    Level level = new Level(propertyHolder);
                     String levelData = Util.readFile(file);
                     levelParser.validateCoarsely(levelData, file.getName());
                     List<Element> elements = levelParser.parse(levelData, file.getName(), level);

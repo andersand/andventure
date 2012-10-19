@@ -34,12 +34,10 @@ public class Door extends Structure implements Interactable, Passable {
     @Override
     public void interact() {
         state = state == State.OPEN ? State.CLOSED : State.OPEN;
-        System.out.println("Using door. Door is now " + state);
     }
 
     @Override
     public boolean isPassableNow() {
-        System.out.println("Door is " + state);
         return state == State.OPEN;
     }
 

@@ -17,6 +17,6 @@ public class Tree extends Structure {
 
     @Override
     public void init(char levelDataChar) {
-        image = Util.loadElementImage("t");
+        image = (Util.random(2) == 1) ? Util.loadElementImage("t") : Util.loadElementImage("t1");
     }
 }

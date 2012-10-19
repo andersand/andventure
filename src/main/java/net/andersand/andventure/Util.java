@@ -1,5 +1,6 @@
 package net.andersand.andventure;
 
+import net.andersand.andventure.engine.Bounds;
 import net.andersand.andventure.model.Position;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
@@ -12,6 +13,10 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author asn
@@ -81,16 +86,24 @@ public class Util {
         return position.getY() * Const.BGTILE_SIZE_PIXELS;
     }
 
-    public static void drawFloor(Position position) {
-        int x = Util.getElementPixelX(position);
-        int y = Util.getElementPixelY(position);
-        try {
-            Image floor = new Image(Const.IMG_DIR + "fl" + Const.ELEMENT_IMG_SUFFIX);
-            floor.draw(x, y);
+    public static List<String> divideIntoLines(String text, int lineMaxLength) {
+        List<String> lines = new ArrayList<String>();
+        List<String> words = Arrays.asList(text.split(" "));
+        String line = "";
+        Iterator<String> it = words.iterator();
+        String nextWord;
+        while (it.hasNext()) {
+            nextWord = it.next();
+            if (line.length() + nextWord.length() < lineMaxLength) {
+                line += nextWord + " ";
+            }
+            else {
+                lines.add(line);
+                line = nextWord + " ";
+            }
         }
-        catch (SlickException e) {
-            e.printStackTrace();
-        }
+        lines.add(line);
+        return lines;
     }
 
     /**
@@ -101,13 +114,43 @@ public class Util {
         return (int) (Math.random() * upperLimit);
     }
 
-    public static Font loadFont(String fntFile, String imgFile) {
+    public static Font loadFont(String fontName) {
         try {
-            return new AngelCodeFont(fntFile, imgFile);
+            return new AngelCodeFont(Const.FONT_DIR + fontName + ".fnt", Const.FONT_DIR + fontName + "_0.tga");
         }
         catch (SlickException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    public static Bounds getAdjustedBounds(Bounds bounds) {
+        if (bounds.width < Const.PAPER_WIDTH + Const.WINDOW_SIDE_EXTRA_WIDTH) {
+            bounds.width = Const.PAPER_WIDTH + Const.WINDOW_SIDE_EXTRA_WIDTH;
+        }
+        if (bounds.height < Const.PAPER_HEIGHT) {
+            bounds.height = Const.PAPER_HEIGHT;
+        }
+        return bounds;
+    }
+
+    public static String randomAlphaNumeric() {
+        int diceRoll = Util.random(10);
+        if (diceRoll == 0) {
+            //digit
+            int low = 48;
+            int rnd = Util.random(10);
+            char c = (char) (low + rnd);
+            return String.valueOf(c);
+        }
+        int low = 65;
+        if (diceRoll >= 5) {
+            //lowercase
+            low += 32;
+        }
+        int rnd = Util.random(26);
+        char c = (char) (low + rnd);
+        return String.valueOf(c);
+    }
+    
 }

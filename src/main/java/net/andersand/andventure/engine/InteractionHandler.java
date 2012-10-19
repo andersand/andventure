@@ -13,7 +13,7 @@ public class InteractionHandler {
     protected boolean moveRequested;
     protected int changeX = 0;
     protected int changeY = 0;
-    private Level currentLevel;
+    protected Level currentLevel;
 
     public InteractionHandler(Input input, Level level) {
         currentLevel = level;

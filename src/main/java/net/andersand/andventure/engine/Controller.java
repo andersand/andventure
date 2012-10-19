@@ -1,13 +1,12 @@
 package net.andersand.andventure.engine;
 
 import net.andersand.andventure.Const;
-import net.andersand.andventure.GameState;
-import net.andersand.andventure.GameStateListener;
 import net.andersand.andventure.PropertyHolder;
-import net.andersand.andventure.model.Position;
-import net.andersand.andventure.model.elements.*;
+import net.andersand.andventure.model.elements.Creature;
+import net.andersand.andventure.model.elements.Player;
 import net.andersand.andventure.model.level.Level;
-import net.andersand.andventure.model.menu.GUI;
+import net.andersand.andventure.model.level.LevelLoader;
+import net.andersand.andventure.view.GUI;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -20,56 +19,64 @@ import java.util.List;
  * 
  * @author asn
  */
-public class Controller implements GameStateListener {
+public class Controller {
     
-    private List<Level> levels;
-    private Level currentLevel;
-    private Player player;
-    private int nextLevelIndex = 0;
-    private Bounds windowBounds;
-    private GUI gui;
-    private GameState gameState;
-    private PropertyHolder propertyHolder;
+    protected List<Level> levels;
+    protected Level currentLevel;
+    protected Player playerElement; // Consider a between-levels persistent non-Element "Player" class
+    protected int currentLevelIndex = 0;
+    protected Bounds windowBounds;
+    protected GUI gui;
+    protected GameState gameState;
+    protected PropertyHolder propertyHolder;
 
-    public Controller(PropertyHolder propertyHolder) {
+    public Controller(PropertyHolder propertyHolder, Bounds bounds) {
         this.propertyHolder = propertyHolder;
-    }
-
-    public Level getCurrentLevel() {
-        return currentLevel;
+        this.windowBounds = bounds;
     }
 
     public void setLevels(List<Level> levels) {
         this.levels = levels;
     }
     
+    public void init() {
+        gui = new GUI(propertyHolder, windowBounds);
+        gameState = GameState.INIT_COMPLETE;
+    }
+    
     public void startGame() {
-        gui = new GUI(this, propertyHolder);
-        gotoNextLevel();
-        gui.setBriefingPosition(calculatePositionForBriefing());
+        displayBriefing(levels.get(0));
+    }
+
+    protected void gotoNextLevel() {
+        gotoLevel(+1);
+    }
+
+    protected void gotoPreviousLevel() {
+        gotoLevel(-1);
+    }
+
+    protected void gotoLevel(int relativeIndex) {
+        currentLevelIndex += relativeIndex;
+        startLevel();
+    }
+
+    protected void startLevel() {
+        currentLevel = levels.get(currentLevelIndex);
+        currentLevel.init(windowBounds);
+        playerElement = currentLevel.getPlayer();
+    }
+
+    protected void displayBriefing(Level level) {
+        gui.createBriefing(level);
         gameState = GameState.BRIEFING;
     }
     
-    public void gotoNextLevel() {
-        currentLevel = levels.get(nextLevelIndex++);
-        player = currentLevel.getPlayer();
-        gui.initLevel(windowBounds, currentLevel);
+    protected void displayDebriefing(Level level) {
+        gui.createDebriefing(level);
         gameState = GameState.BRIEFING;
     }
-    
-    private Position calculatePositionForBriefing() {
-        Position p = new Position(0, 0);
-        if (windowBounds.width > Const.WINDOW_MINIMUM_WIDTH) {
-            int newX = (windowBounds.width/2)-(Const.WINDOW_MINIMUM_WIDTH/2);
-            p.setX(newX);
-        }
-        if (windowBounds.height > Const.WINDOW_MINIMUM_HEIGHT) {
-            int newY = (windowBounds.height/2)-(Const.WINDOW_MINIMUM_HEIGHT/2);
-            p.setY(newY);
-        }
-        return p;
-    }
-    
+
     public void handlePlayerInput(GameContainer container) {
         Input input = container.getInput();
 
@@ -77,49 +84,61 @@ public class Controller implements GameStateListener {
 
         InteractionHandler handler = new InteractionHandler(input, currentLevel);
         if (handler.isMoveRequested()) {
-            handler.perform(player);
+            handler.perform(playerElement);
         }
     }
 
     public void handleUserInput(GameContainer container) {
         Input input = container.getInput();
 
-        if (gameState.equals(GameState.BRIEFING) && input.isKeyPressed(Input.KEY_SPACE)) {
+        if (gameState.equals(GameState.BRIEFING) && input.isKeyDown(Input.KEY_SPACE)) {
             gameState = GameState.IN_GAME;
+            startLevel();
         }
         if (input.isKeyPressed(Input.KEY_Q)) {
-            System.exit(0); // todo MID Quit game more nicely
+            System.exit(0); // todo LOW Quit game more nicely
         }
     }
 
-    private void handleDeveloperMode(Input input) {
-        if (Const.DEVELOPER_MODE) {
+    protected void handleDeveloperMode(Input input) {
+        if (Const.DEVELOPER_MODE && gameState.equals(GameState.IN_GAME)) {
             
-            if (input.isKeyPressed(Input.KEY_N)) {
+            if (input.isKeyPressed(Input.KEY_ADD)) {
                 gotoNextLevel();
+            }
+            if (input.isKeyPressed(Input.KEY_SUBTRACT)) {
+                gotoPreviousLevel();
             }
         }
     }
 
-    public void performAI(GameContainer container) {
+    public void performAI() {
         for (Creature c : currentLevel.getCreaturesAI()) {
            c.move();
         }
     }
 
-    public void setWindowBounds(Bounds windowBounds) {
-        this.windowBounds = windowBounds;
-    }
-
-    @Override
     public GameState getGameState() {
         return gameState;
     }
 
-    public GUI getGui() {
-        return gui;
+    public void checkObjectives() {
+        if (currentLevel.isCompleted()) {
+            gameState = GameState.LEVEL_COMPLETE;
+        }
     }
 
+    public void endLevel() {
+        displayDebriefing(currentLevel);
+        currentLevelIndex++;
+    }
 
+    public void renderBriefing() {
+        gui.renderDialog();
+    }
+
+    public void renderLevel() {
+        currentLevel.render();
+    }
 
 }

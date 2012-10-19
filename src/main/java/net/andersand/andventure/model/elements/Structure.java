@@ -8,11 +8,5 @@ import net.andersand.andventure.Util;
 public abstract class Structure extends Element {
     @Override
     protected void preDraw() {
-        if (position == null) {
-            return;
-        }
-        if (propertyHolder.getBoolean("settings.floorAsElements")) {
-            Util.drawFloor(position);
-        }
     }
 }

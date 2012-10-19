@@ -1,7 +1,6 @@
 package net.andersand.andventure.model;
 
 import net.andersand.andventure.Util;
-import net.andersand.andventure.model.Position;
 import org.newdawn.slick.Image;
 
 /**

@@ -4,7 +4,9 @@ package net.andersand.andventure.engine;
  * @author asn
  */
 public enum GameState {
-    IN_GAME,
+    INIT_COMPLETE,
     PAUSED,
+    IN_GAME,
+    LEVEL_COMPLETE,
     BRIEFING
 }

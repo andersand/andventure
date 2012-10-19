@@ -5,33 +5,31 @@ import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.engine.Bounds;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
+import net.andersand.andventure.model.level.objectives.*;
+import net.andersand.andventure.model.level.script.Script;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * @author asn
  */
 public class LevelParser {
 
-    private PropertyHolder propertyHolder;
+    protected PropertyHolder propertyHolder;
     
-    Map<String, Class<? extends Element>> elementLookupTable = new HashMap<String, Class<? extends Element>>();
-    private Map<String, Field> metaLookupTable = new HashMap<String, Field>();
-    private Map<String, ObjectiveType> objectivesLookupTable = new HashMap<String, ObjectiveType>();
-    int tallestLevel;
-    int widestLevel;
+    protected Map<String, Class<? extends Element>> elementLookupTable = new HashMap<String, Class<? extends Element>>();
+    protected Map<String, Field> metaLookupTable = new HashMap<String, Field>();
+    protected Map<String, Class<? extends Objective>> objectivesLookupTable = new HashMap<String, Class<? extends Objective>>();
+    protected int tallestLevel;
+    protected int widestLevel;
 
     public LevelParser(PropertyHolder propertyHolder) {
         this.propertyHolder = propertyHolder;
         populateLookupTables();
     }
 
-    private void populateLookupTables() {
-        if (propertyHolder.getBoolean("settings.floorAsElements")) {
-            elementLookupTable.put(" ", Floor.class);
-        }
+    protected void populateLookupTables() {
         elementLookupTable.put("w", Wall.class);
         elementLookupTable.put("W", Wall.class);
         elementLookupTable.put("p", Player.class);
@@ -52,11 +50,12 @@ public class LevelParser {
         catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-        objectivesLookupTable.put("object", ObjectiveType.RETRIEVE_OBJECT);
-        objectivesLookupTable.put("rescue", ObjectiveType.RESCUE_NPC);
-        objectivesLookupTable.put("defend", ObjectiveType.DEFEND_AREA_TIMELIMIT);
-        objectivesLookupTable.put("assassinate", ObjectiveType.ASSASINATION);
-        objectivesLookupTable.put("defeatAllFoes", ObjectiveType.DEFEAT_ALL_FOES);
+        objectivesLookupTable.put("moveTo", MoveToObjective.class);
+        objectivesLookupTable.put("object", RetrieveObjectObjective.class);
+        objectivesLookupTable.put("rescue", RescueObjective.class);
+        objectivesLookupTable.put("defend", DefendObjective.class);
+        objectivesLookupTable.put("assassinate", AssassinationObjective.class);
+        objectivesLookupTable.put("defeatAllFoes", DefeatAllFoesObjective.class);
     }
 
     /**
@@ -66,10 +65,12 @@ public class LevelParser {
     public List<Element> parse(String levelData, String levelFileName, Level level) {
         List<String> lines = getLines(levelData);
         List<String> metaLines = getMetaLines(lines);
-        lines = removeEmptyLinesAndMeta(lines);
+        List<String> scriptLines = getScriptLines(lines);
+        lines = removeNonMapLines(lines);
         List<Element> elements = new ArrayList<Element>();
         try {
             level.setMeta(parseMetaData(metaLines));
+            level.setScript(parseScript(metaLines));
             int n = 0;
             for (String line : lines) {
                 elements.addAll(parseLine(level, line, n++));
@@ -82,7 +83,11 @@ public class LevelParser {
         return elements;
     }
 
-    public Meta parseMetaData(List<String> metaLines) throws IllegalAccessException {
+    protected Script parseScript(List<String> scriptLines) {
+        return new ScriptParser().parse(scriptLines);
+    }
+
+    public Meta parseMetaData(List<String> metaLines) throws IllegalAccessException, InstantiationException {
         Meta meta = new Meta();
         for (String metaLine : metaLines) {
             String[] parts = metaLine.split("=");
@@ -114,26 +119,34 @@ public class LevelParser {
         return meta;
     }
 
-    private Objective handleObjective(String objectiveStr) {
-        ObjectiveType objectiveType;
+    protected Objective handleObjective(String objectiveStr) throws IllegalAccessException, InstantiationException {
+        Class<? extends Objective> objective;
         String objectiveValue = "";
         if (objectiveStr.contains("@")) {
             String[] parts = objectiveStr.split("@");
-            objectiveType = objectivesLookupTable.get(parts[0]);
+            objective = objectivesLookupTable.get(parts[0]);
             objectiveValue = parts[1];
         }
         else {
-            objectiveType = objectivesLookupTable.get(objectiveStr);
+            objective = objectivesLookupTable.get(objectiveStr);
         }
-        if (objectiveType == null) {
-            throwException("level.parsing.failed.invalid.objective.type", objectiveStr);
+        if (objective == null) {
+            throwException("level.parsing.failed.invalid.objective.type", objectiveStr, list(objectivesLookupTable.keySet()));
         }
-        Objective o = new Objective(objectiveType);
+        Objective o = objective.newInstance();
         o.setValue(objectiveValue);
         return o;
     }
 
-    private List<String> getMetaLines(List<String> lines) {
+    protected String list(Set<String> strings) {
+        StringBuilder ret = new StringBuilder();
+        for (String string : strings) {
+            ret.append(string).append(", ");
+        }
+        return ret.delete(ret.length()-2,ret.length()).toString();
+    }
+    
+    protected List<String> getMetaLines(List<String> lines) {
         List<String> metaLines = new ArrayList<String>();
         for (String line : lines) {
             if (line.startsWith(Const.LEVEL_META)) {
@@ -143,7 +156,17 @@ public class LevelParser {
         return metaLines;
     }
 
-    private List<Element> parseLine(Level level, String levelDataLine, int yPosition) throws IllegalAccessException, InstantiationException {
+    protected List<String> getScriptLines(List<String> lines) {
+        List<String> scriptLines = new ArrayList<String>();
+        for (String line : lines) {
+            if (line.startsWith(Const.LEVEL_SCRIPT)) {
+                scriptLines.add(line);
+            }
+        }
+        return scriptLines;
+    }
+
+    protected List<Element> parseLine(Level level, String levelDataLine, int yPosition) throws IllegalAccessException, InstantiationException {
         List<Element> elements = new ArrayList<Element>();
         int xPosition = 0;
         for (char c : levelDataLine.toCharArray()) {
@@ -158,7 +181,7 @@ public class LevelParser {
                 element.setPosition(new Position(xPosition, yPosition));
                 element.setPropertyHolder(propertyHolder);
                 if (element instanceof Creature) {
-                    ((Creature)element).setLevelListener(level);
+                    ((Creature)element).setLevelCreatureInteraction(level);
                 }
                 element.init(c);
                 elements.add(element);
@@ -173,7 +196,7 @@ public class LevelParser {
      */
     public void validateCoarsely(String levelData, String levelFileName) {
         List<String> lines = getLines(levelData);
-        lines = removeEmptyLinesAndMeta(lines);
+        lines = removeNonMapLines(lines);
         int levelHeight = lines.size();
         int longestLine = 0;
         int shortestLine = 99999;
@@ -197,21 +220,25 @@ public class LevelParser {
         updateTallestWidestLevel(levelHeight, longestLine);
     }
 
-    private List<String> removeEmptyLinesAndMeta(List<String> lines) {
+    protected List<String> removeNonMapLines(List<String> lines) {
         List<String> mapLines = new ArrayList<String>();
         for (String line : lines) {
-            if (line.length() != 0 && !line.startsWith(Const.LEVEL_META)) {
+            if (line.length() != 0 && !line.startsWith(Const.LEVEL_META) && !line.startsWith(Const.LEVEL_SCRIPT)) {
                 mapLines.add(line);
             }
         }
         return mapLines;
     }
 
-    private void throwException(String propertyKey, String parameter) {
-        throw new IllegalStateException(propertyHolder.get(propertyKey).replaceFirst("\\$", parameter));
+    protected void throwException(String propertyKey, String... parameters) {
+        String text = propertyHolder.get(propertyKey);
+        for (String parameter : parameters) {
+            text = text.replaceFirst("\\$", parameter);
+        }
+        throw new IllegalStateException(text);
     }
 
-    private void updateTallestWidestLevel(int levelHeight, int levelWidth) {
+    protected void updateTallestWidestLevel(int levelHeight, int levelWidth) {
         if (levelHeight > tallestLevel) {
             tallestLevel = levelHeight;
         }
@@ -220,7 +247,7 @@ public class LevelParser {
         }
     }
 
-    private static List<String> getLines(String levelData) {
+    protected static List<String> getLines(String levelData) {
         return Arrays.asList(levelData.split("\n"));
     }
 

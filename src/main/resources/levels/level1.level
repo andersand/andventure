@@ -22,4 +22,7 @@ wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 ?META name=Tavern
 ?META description=Defeat the enemy!
 ?META objectives=defeatAllFoes
-?META equipment=
+?META equipment=s
+?SCRIPT equip 2x43 "a"
+?SCRIPT dialog 15x7 charley.gif Charley "Hello there... Here, take this sword. You'll need it if you want to get out of here!"
+?SCRIPT interact 15x7 yield "s"

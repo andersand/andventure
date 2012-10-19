@@ -10,6 +10,13 @@ import org.testng.annotations.Test;
 @Test
 public class UtilTest {
 
+    int lowestAsciiDigit = 48;
+    int highestAsciiDigit = 57;
+    int lowestAsciiUppercase = 65;
+    int highestAsciiUppercase = 90;
+    int lowestAsciiLowercase = 97;
+    int highestAsciiLowercase = 122;    
+    
     @Test(dataProvider = "equipmentStringProvider")
     public void randomizeEquipmentYieldsAllCombinations(String equipmentString) {
 
@@ -39,7 +46,7 @@ public class UtilTest {
     }
 
     @Test(dataProvider = "upperLimit")
-    public void randomWorksAsItShould(int upperLimit) {
+    public void utilRandomWorksAsItShould(int upperLimit) {
         int lowest = 999;
         int highest = 0;
         for (int i = 0; i < 100; i++) {
@@ -67,5 +74,19 @@ public class UtilTest {
             {4},
             {5}
         };
+    }
+    
+    @Test
+    public void randomAlphaNumericOnlyYieldsAlphaNumeric() {
+        char[] valueCA;
+        char c;
+        for (int i = 0; i < 1000; i++) { // 1K times ought to be enough
+            valueCA = Util.randomAlphaNumeric().toCharArray();
+            assert valueCA != null && valueCA.length == 1;
+            c = valueCA[0];
+            assert (c >= lowestAsciiDigit && c <= highestAsciiDigit) ||
+                   (c >= lowestAsciiLowercase && c <= highestAsciiLowercase) ||
+                   (c >= lowestAsciiUppercase && c <= highestAsciiUppercase) : "Invalid char: " + c;
+        }
     }
 }

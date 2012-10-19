@@ -1,8 +1,7 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Util;
-import net.andersand.andventure.model.Script;
-import org.newdawn.slick.Image;
+import net.andersand.andventure.model.level.script.Script;
 
 /**
  * Neutrals can be either passive or NPCs
@@ -16,12 +15,17 @@ public class Neutral extends Creature {
     @Override
     public void init(char levelDataChar) {
         image = Util.loadElementImage("n");
-        script = levelListener.getMeta().getScriptForNPC(position);
+        script = levelCreatureInteraction.getMeta().getScriptForNPC(position);
+    }
+
+    @Override
+    protected boolean preventMove() {
+        return true; // As of now, NPCs do not move
     }
 
     @Override
     protected void doInteraction() {
-        // todo: NPC script triggering here
+        // todo HIGH NPC script triggering here
     }
 
     @Override
