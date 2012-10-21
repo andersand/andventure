@@ -28,7 +28,7 @@ public class Wall extends Structure implements ContiguousElement, SpriteSheetEle
     @Override
     public void init(char levelDataChar, Script script) {
         String fileName = levelDataChar == 'w' ? "walls_stone.png" : "walls_wood.png";
-        spriteSheet = new SpriteSheet(Util.loadImage(fileName), 15, 15);
+        spriteSheet = new SpriteSheet(Util.loadImage("elements/" + fileName), 15, 15);
         
     }
 

@@ -77,7 +77,7 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
 
     public void render() {
         drawFloorTiles();
-        drawSpriteSheetElements();
+//        drawSpriteSheetElements();
         drawOtherElements();
     }
 
