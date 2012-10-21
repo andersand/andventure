@@ -1,0 +1,27 @@
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww-wwwwwwwwwwwwwwwwwwwwwwwwww
+w                                  w                w                w
+w                                  w                w                w
+w                                  w                w                w
+w        p            TT   TT      w                w                w
+w                     TT   TT      w                w                w
+w                          TT      w       f        |                w
+w                                  w                w                w
+wwwwwwww-wwwwwwww       TTT        wwwwwwwwwwwwwwwwww                w
+w               w       TTT        w                w                w
+w               w                  w                w                w
+w               w         TTT      w                w                w
+w               w         TTT      w                w                w
+w               w         TTT      w                w                w
+w               w                  wwwwwwwww-wwwwwwww                w
+w               w                  w                                 w
+wwwwwwwwwwww-wwww                  |                                 w
+w               w                  w                                 w
+w               w                  w                                 w
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+
+?META name=Testlevel.
+?META description=Contiguity Testlevel (Table)
+?META objectives=defeatAllFoes
+?SCRIPT equip player ""
+?SCRIPT equip 43x6 "a"
+?SCRIPT exit 43x0

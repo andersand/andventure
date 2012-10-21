@@ -5,16 +5,14 @@ import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.engine.Bounds;
 import net.andersand.andventure.model.*;
-import net.andersand.andventure.model.elements.Creature;
-import net.andersand.andventure.model.elements.Element;
-import net.andersand.andventure.model.elements.Foe;
-import net.andersand.andventure.model.elements.Player;
+import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.objectives.Objective;
 import net.andersand.andventure.model.level.script.Script;
 import net.andersand.andventure.view.dialogs.Briefing;
 import net.andersand.andventure.view.dialogs.Debriefing;
 import net.andersand.andventure.view.dialogs.Dialog;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,23 +22,36 @@ import java.util.List;
  */
 public class Level implements Renderable, LevelCreatureInteraction, LevelObjectiveInteraction  {
 
+    protected Meta meta;
+    protected Script script;
     protected List<Tile> floorTiles = new ArrayList<Tile>();
     protected List<Element> elements;
-    protected Meta meta;
+
+    protected List<SpriteSheetElement> spriteSheetElements;
     protected List<Creature> creaturesAI = new ArrayList<Creature>();
     protected List<Foe> foes = new ArrayList<Foe>();
+
     protected Player player;
-    protected Script script;
     protected PropertyHolder propertyHolder;
+    protected Bounds dimension;
+    private SpriteSheet spriteSheet;
 
     public Level(PropertyHolder propertyHolder) {
         this.propertyHolder = propertyHolder;
     }
 
+    /**
+     * Sets the elements for the level.
+     * 
+     * Ordering elements in drawing order. Objects and other passable stuff should be drawn first
+     * so movable elements are drawn on top of them. 
+     * 
+     * Also picking out specific elements for quick reference from field
+     * @param elements all elements, in order of y,x as they are parsed
+     */
     public void setElements(List<Element> elements) {
-        // ordering elements in drawing order. Objects and other passable stuff should be drawn first
-        // so movable elements are drawn on top of them
         List<Element> elementsOrderedSpecifically = new ArrayList<Element>(elements.size());
+        List<Element> interactables = new ArrayList<Element>();
         for (Element element : elements) {
             if (element instanceof Player) {
                 player = (Player)element;
@@ -51,10 +62,14 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
                     foes.add((Foe)element);
                 }
             }
+            else if (element instanceof Interactable) {
+                interactables.add(element);
+            }
             else {
                 elementsOrderedSpecifically.add(element);
             }
         }
+        elementsOrderedSpecifically.addAll(interactables);
         elementsOrderedSpecifically.addAll(creaturesAI);
         elementsOrderedSpecifically.add(player);
         this.elements = elementsOrderedSpecifically;        
@@ -62,7 +77,15 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
 
     public void render() {
         drawFloorTiles();
-        drawElements();
+        drawSpriteSheetElements();
+        drawOtherElements();
+    }
+
+    private void drawSpriteSheetElements() {
+        spriteSheet.startUse();
+        for (SpriteSheetElement sse : spriteSheetElements) {
+            sse.renderSprite();
+        }
     }
 
     protected void drawFloorTiles() {
@@ -71,9 +94,11 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
         }
     }
 
-    protected void drawElements() {
+    protected void drawOtherElements() {
         for (Element element : elements) {
-            element.render();
+            if (!(element instanceof SpriteSheetElement)) {
+                element.render();
+            }
         }
     }
 
@@ -89,8 +114,13 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
         if (position == null) {
             throw new IllegalStateException("Cannot look without a position");
         }
+        return elementAt(position.getX(), position.getY());
+    }
+
+    protected Element elementAt(int x, int y) {
         for (Element element : elements) {
-            if (element.getPosition().equals(position)) {
+            if (element.getPosition().getX() == x
+                && element.getPosition().getY() == y) {
                 return element;
             }
         }
@@ -157,4 +187,64 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
     public Dialog getDebriefing(Position dialogPositon) {
         return new Debriefing(dialogPositon, this);
     }
+
+    public Script getScript() {
+        return script;
+    }
+
+    public void setDimension(Bounds dimension) {
+        this.dimension = dimension;
+    }
+
+    /**
+     * Some elements like Walls and Desks, that consists of several neighbouring elements,
+     * need to be aligned - given specific images depending on which elements are their 
+     * neighbours.
+     */
+    public void handleContiguousElements() {
+        new ContiguityHandler();
+    }
+
+    protected class ContiguityHandler {
+
+        protected ContiguityHandler() {
+            Element element;
+            for (int x = 0; x < dimension.width; x++) {
+                for (int y = 0; y < dimension.height; y++) {
+                    element = elementAt(x, y);
+                    if (element instanceof ContiguousElement) {
+                        handleContiguity((ContiguousElement)element);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Returs element only if it is one of the specified alignmentClasses
+         */
+        protected Element query(Element element, List<Class<? extends Element>> alignmentClasses) {
+            if (element == null) {
+                return null;
+            }
+            if (alignmentClasses.contains(element.getClass())) {
+                return element;
+            }
+            else {
+                return null;
+            }
+        }
+
+        protected void handleContiguity(ContiguousElement element) {
+            Element el = (Element) element;
+            int x = el.getPosition().getX();
+            int y = el.getPosition().getY();
+            Element left  = query(elementAt(x-1, y), element.getAlignmentClasses());
+            Element right = query(elementAt(x+1, y), element.getAlignmentClasses());
+            Element up    = query(elementAt(x, y-1), element.getAlignmentClasses());
+            Element down  = query(elementAt(x, y+1), element.getAlignmentClasses());
+            element.align(left, right, up, down);
+        }
+
+    }
+    
 }

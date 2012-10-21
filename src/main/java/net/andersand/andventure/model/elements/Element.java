@@ -4,6 +4,7 @@ import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.Renderable;
+import net.andersand.andventure.model.level.script.Script;
 import org.newdawn.slick.Image;
 
 /**
@@ -33,7 +34,7 @@ public abstract class Element implements Renderable {
      */
     public abstract Image getImage();
     
-    public abstract void init(char levelDataChar);
+    public abstract void init(char levelDataChar, Script script);
 
     public void render() {
         if (position == null) {

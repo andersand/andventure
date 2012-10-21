@@ -2,6 +2,7 @@ package net.andersand.andventure.model.level;
 
 import net.andersand.andventure.Const;
 import net.andersand.andventure.PropertyHolder;
+import net.andersand.andventure.Util;
 import net.andersand.andventure.engine.Bounds;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
@@ -12,6 +13,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
+ * Most of the level parsing is handled here
+ * 
  * @author asn
  */
 public class LevelParser {
@@ -40,11 +43,14 @@ public class LevelParser {
         elementLookupTable.put("r", Ring.class);
         elementLookupTable.put("c", Corpse.class);
         elementLookupTable.put("t", Tree.class);
+        elementLookupTable.put("T", Table.class);
+        elementLookupTable.put("d", Desk.class);
+        elementLookupTable.put("c", Chair.class);
+        elementLookupTable.put("C", Chair.class);
         try {
             metaLookupTable.put("name", Meta.class.getField("name"));
             metaLookupTable.put("description", Meta.class.getField("description"));
             metaLookupTable.put("objectives", Meta.class.getField("objectives"));
-            metaLookupTable.put("equipment", Meta.class.getField("equipment"));
             metaLookupTable.put("environment", Meta.class.getField("environment"));
         }
         catch (NoSuchFieldException e) {
@@ -70,11 +76,13 @@ public class LevelParser {
         List<Element> elements = new ArrayList<Element>();
         try {
             level.setMeta(parseMetaData(metaLines));
-            level.setScript(parseScript(metaLines));
+            level.setScript(parseScript(scriptLines));
             int n = 0;
             for (String line : lines) {
                 elements.addAll(parseLine(level, line, n++));
             }
+            level.setElements(elements);
+            level.handleContiguousElements();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +91,7 @@ public class LevelParser {
         return elements;
     }
 
-    protected Script parseScript(List<String> scriptLines) {
+    protected Script parseScript(List<String> scriptLines) throws IllegalAccessException, InstantiationException {
         return new ScriptParser().parse(scriptLines);
     }
 
@@ -167,6 +175,7 @@ public class LevelParser {
     }
 
     protected List<Element> parseLine(Level level, String levelDataLine, int yPosition) throws IllegalAccessException, InstantiationException {
+        Script script = level.getScript();
         List<Element> elements = new ArrayList<Element>();
         int xPosition = 0;
         for (char c : levelDataLine.toCharArray()) {
@@ -183,7 +192,7 @@ public class LevelParser {
                 if (element instanceof Creature) {
                     ((Creature)element).setLevelCreatureInteraction(level);
                 }
-                element.init(c);
+                element.init(c, script);
                 elements.add(element);
             }
             xPosition++;
@@ -193,8 +202,9 @@ public class LevelParser {
 
     /**
      * Coarsely validates level data consistency without parsing
+     * @return level dimension
      */
-    public void validateCoarsely(String levelData, String levelFileName) {
+    public Bounds validateCoarsely(String levelData, String levelFileName) {
         List<String> lines = getLines(levelData);
         lines = removeNonMapLines(lines);
         int levelHeight = lines.size();
@@ -218,6 +228,7 @@ public class LevelParser {
             throwException("level.loading.failed.too.big", levelFileName);
         }
         updateTallestWidestLevel(levelHeight, longestLine);
+        return new Bounds(longestLine, levelHeight);
     }
 
     protected List<String> removeNonMapLines(List<String> lines) {
@@ -248,14 +259,12 @@ public class LevelParser {
     }
 
     protected static List<String> getLines(String levelData) {
-        return Arrays.asList(levelData.split("\n"));
+        return Util.toArrayList(levelData.split("\n"));
     }
 
     public Bounds getLevelBounds() {
-        Bounds b = new Bounds();
-        b.width = widestLevel * Const.ELEMENT_SIZE_PIXELS;
-        b.height = tallestLevel * Const.ELEMENT_SIZE_PIXELS;
-        return b;
+        return new Bounds(widestLevel * Const.ELEMENT_SIZE_PIXELS, 
+                          tallestLevel * Const.ELEMENT_SIZE_PIXELS);
     }
     
 }

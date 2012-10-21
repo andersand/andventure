@@ -47,7 +47,7 @@ public class Debriefing extends Dialog {
                 numDeadFoes++;
             }
         }
-        lines.add(String.format("Foes defeated: %s/%s", numFoes, numDeadFoes));
+        lines.add(String.format("Foes defeated.........%s of %s", numFoes, numDeadFoes));
         return lines;
     }
 

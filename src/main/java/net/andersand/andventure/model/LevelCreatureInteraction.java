@@ -9,5 +9,4 @@ import net.andersand.andventure.model.level.Meta;
 public interface LevelCreatureInteraction {
     
     Element look(Position position);
-    Meta getMeta();
 }

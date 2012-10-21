@@ -2,6 +2,8 @@ package net.andersand.andventure;
 
 import net.andersand.andventure.engine.Bounds;
 import net.andersand.andventure.model.Position;
+import net.andersand.andventure.model.elements.Table;
+import net.andersand.andventure.model.elements.Wall;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
@@ -13,10 +15,7 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author asn
@@ -88,7 +87,7 @@ public class Util {
 
     public static List<String> divideIntoLines(String text, int lineMaxLength) {
         List<String> lines = new ArrayList<String>();
-        List<String> words = Arrays.asList(text.split(" "));
+        List<String> words = getWords(text);
         String line = "";
         Iterator<String> it = words.iterator();
         String nextWord;
@@ -152,5 +151,39 @@ public class Util {
         char c = (char) (low + rnd);
         return String.valueOf(c);
     }
+
+    /**
+     * Returns a list of words from parameter line.
+     * Useful for parsing stuff ;)
+     */
+    public static List<String> getWords(String line) {
+        return toArrayList(line.split(" "));
+    }
+
+    public static <T> List<T> toArrayList(T... objects) {
+        return new ArrayList<T>(Arrays.asList(objects));
+    }
+
+    public static String directionString(boolean left, boolean right, boolean up, boolean down) {
+        StringBuilder sb = new StringBuilder(4);
+        if (left) {
+            sb.append("l");
+        }
+        if (right) {
+            sb.append("r");
+        }
+        if (up) {
+            sb.append("u");
+        }
+        if (down) {
+            sb.append("d");
+        }
+        return sb.toString();
+    }
+
+    public static void log(String text) {
+        System.out.printf("%s %s %s\n", new Date().toString(), Const.PREPEND_LOG, text);
+    }
+
     
 }

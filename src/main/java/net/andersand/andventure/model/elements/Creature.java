@@ -15,7 +15,7 @@ public abstract class Creature extends Element {
     
     protected Position goal;
     protected LevelCreatureInteraction levelCreatureInteraction;
-    Image image;
+    protected Image image;
 
     protected String equipmentString;
     protected int attack;

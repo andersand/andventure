@@ -54,4 +54,4 @@ ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
 ?META description=Clear the forest
 ?META objectives=defeatAllFoes
 ?META environment=exterior_dirt
-?META equipment=s
+?SCRIPT equip player "s"

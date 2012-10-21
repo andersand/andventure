@@ -49,4 +49,9 @@ public class Position {
     public Position copy() {
         return new Position(this, 0, 0);
     }
+
+    public void change(int xMod, int yMod) {
+        x += xMod;
+        y += yMod;
+    }
 }

@@ -1,6 +1,7 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Util;
+import net.andersand.andventure.model.level.script.Script;
 
 /**
  * @author asn
@@ -8,9 +9,9 @@ import net.andersand.andventure.Util;
 public class Player extends Creature {
 
     @Override
-    public void init(char levelDataChar) {
-        String equipment = levelCreatureInteraction.getMeta().getEquipment();
-        equipmentString = equipment == null ? Util.randomizeEquipment() : equipment;
+    public void init(char levelDataChar, Script script) {
+        String assignedEquipment = script.getAssignedEquipment(null);
+        equipmentString = assignedEquipment == null ? Util.randomizeEquipment() : assignedEquipment;
         String partialFileName = "".equals(equipmentString) ? "pl" : "pl_" + equipmentString;
         image = Util.loadElementImage(partialFileName);
         initAttackDefense();

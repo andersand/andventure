@@ -20,7 +20,7 @@ public abstract class Dialog implements Renderable {
     protected String randomEmblemChar;
 
     protected void loadGenericFont() {
-        genericFont = Util.loadFont("8-bit");
+        genericFont = Util.loadFont("fatal-fury");
     }
 
     public Dialog(Position position) {
@@ -44,7 +44,7 @@ public abstract class Dialog implements Renderable {
             drawDynamicText(writingFont);
         }
         else if (getFixedText() != null) {
-            drawFixedText(writingFont);
+            drawFixedText();
         }
         if (getImage() != null) {
             drawImage();
@@ -71,8 +71,12 @@ public abstract class Dialog implements Renderable {
         emblemFont.drawString(position.getX() + Const.PAPER_WIDTH - (80 + adjust), position.getY() + Const.FONT_HEIGHT, randomEmblemChar, Color.black);
     }
 
-    protected void drawFixedText(Font writingFont) {
+    protected void drawFixedText() {
         // todo HIGH impl. (used by standard debrief summary)
+        List<String> lines = getFixedText();
+        for (int i=0; i<lines.size(); i++) {
+            genericFont.drawString(position.getX() + 50, position.getY() + Const.FONT_HEIGHT + genericFont.getLineHeight() * (10 + i), lines.get(i), Color.black);
+        }
     }
 
     protected void drawDynamicText(Font writingFont) {

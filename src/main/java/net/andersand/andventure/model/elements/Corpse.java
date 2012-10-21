@@ -1,6 +1,7 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Util;
+import net.andersand.andventure.model.level.script.Script;
 import org.newdawn.slick.Image;
 
 /**
@@ -16,7 +17,7 @@ public class Corpse extends Object {
     }
 
     @Override
-    public void init(char levelDataChar) {
+    public void init(char levelDataChar, Script script) {
         image = Util.loadElementImage("nd");
     }
 

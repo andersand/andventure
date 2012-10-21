@@ -22,4 +22,5 @@ public class Const {
     public static final int BRIEFING_LINE_MAX_WIDTH = 35;
     public static final int FONT_HEIGHT = 50;
     public static final int FONT_INSET = 50;
+    public static final String PREPEND_LOG = "ANDVENTURE";
 }

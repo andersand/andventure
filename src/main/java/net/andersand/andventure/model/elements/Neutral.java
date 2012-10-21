@@ -10,12 +10,9 @@ import net.andersand.andventure.model.level.script.Script;
  */
 public class Neutral extends Creature {
     
-    protected Script script;
-
     @Override
-    public void init(char levelDataChar) {
+    public void init(char levelDataChar, Script script) {
         image = Util.loadElementImage("n");
-        script = levelCreatureInteraction.getMeta().getScriptForNPC(position);
     }
 
     @Override

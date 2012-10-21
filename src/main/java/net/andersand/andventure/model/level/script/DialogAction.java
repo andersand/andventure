@@ -6,9 +6,13 @@ import net.andersand.andventure.model.Position;
  * @author asn
  */
 public class DialogAction extends Action {
-    
-    public DialogAction(Position position) {
-        super(position);
+
+    @Override
+    protected void parseValue() {
     }
-    
+
+    @Override
+    public boolean usingValueWords() {
+        return false;
+    }
 }

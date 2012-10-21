@@ -62,4 +62,4 @@ wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 ?META name=Fort Lancaster
 ?META description=Bring back the stolen ring. Defeat the enemies or sneak your way past them as you see fit.
 ?META objectives=object@60x58
-?META equipment=s
+?SCRIPT equip player "s"

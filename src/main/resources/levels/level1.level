@@ -1,28 +1,29 @@
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-w                                  w                w                w
-w                                  w       f        w                w
-w                                  w                w                w
-w        p                         w                w                w
-w                                  w                w                w
-w                                  w                |                w
-w                                  w                w                w
-wwwwwwww-wwwwwwww                  w                w                w
-w               w                  w                w                w
-w               w                  w                w                w
-w               w                  w                w                w
-w               w                  w                w                w
-w               w                  w                w                w
-w               w                  wwwwwwwwwwwwwwwwww                w
-w      n        w                  w                                 w
-w               w                  |                                 w
-w               w                  w                                 w
-w               w                  w                                 w
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww-wwwwwwwwwwwwwwwwwwwwwwwwww
+w                                  w                w         c c    w
+w                         TT       w                w        TTTT    w
+w                        cTT       w                w        TTTT    w
+w        p               cTT       w   c            w        c c     w
+w                         TT       w                w                w
+w                                  w       f        |         c c    w
+w                                  w                w        TTTT    w
+wwwwwwww-wwwwwwww        cTT       wwwwwwwwwwwwwwwwww        TTTT    w
+w               w         TTc      w  c cc     c c  w        c  c    w
+w               w        cTTc      w  TTTT    TTTT  w         c      w
+w               w         TT       w  TTTT    TTTT  w        TTTT    w
+w               w                  w  c cc    c c   w       cTTTTc   w
+w               wc                 w                w                w
+w   ddddddd     wc        TTc      wwwwwwwww-wwwwwwww          ddddd w
+w   d  n        w        cTT       w                          cd     w
+wwwwwwwwwwww-wwww         TTc      |                          cd n   w
+w               w         TT       w                          cd     w
+w               w                  w                           d     w
 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 
 ?META name=Tavern
-?META description=Defeat the enemy!
+?META description=You wake up, not remembering how you got there... Let's get out of here!
 ?META objectives=defeatAllFoes
-?META equipment=s
-?SCRIPT equip 2x43 "a"
-?SCRIPT dialog 15x7 charley.gif Charley "Hello there... Here, take this sword. You'll need it if you want to get out of here!"
-?SCRIPT interact 15x7 yield "s"
+?SCRIPT equip player ""
+?SCRIPT equip 43x6 "a"
+?SCRIPT dialog 7x15 charley.gif Charley "Hello there... Here, take this sword. You'll need it if you want to get out of here!"
+?SCRIPT give 7x15 "s"
+?SCRIPT exit 43x0

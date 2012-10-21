@@ -1,6 +1,7 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Util;
+import net.andersand.andventure.model.level.script.Script;
 import org.newdawn.slick.Image;
 
 /**
@@ -19,7 +20,7 @@ public class Door extends Structure implements Interactable, Passable {
     }
 
     @Override
-    public void init(char levelDataChar) {
+    public void init(char levelDataChar, Script script) {
         if ("-".equals(String.valueOf(levelDataChar))) {
             open = Util.loadElementImage("dho");
             closed = Util.loadElementImage("dhc");
@@ -28,12 +29,20 @@ public class Door extends Structure implements Interactable, Passable {
             open = Util.loadElementImage("dvo");
             closed = Util.loadElementImage("dvc");
         }
-        state = State.CLOSED;
+        state = State.CLOSED;// all doors are initially closed
     }
 
     @Override
     public void interact() {
-        state = state == State.OPEN ? State.CLOSED : State.OPEN;
+        if (state.equals(State.OPEN)) {
+            state = State.CLOSED;
+            position.change(-1, 0);
+        }
+        else {
+            state = State.OPEN;
+            position.change(1, 0); // meh - this makes the wall next to the door passable :/
+        }
+        Util.log("Using door " + state);
     }
 
     @Override

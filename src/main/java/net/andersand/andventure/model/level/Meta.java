@@ -15,7 +15,6 @@ public class Meta {
     public List<Objective> objectives;
     public String name;
     public String description;
-    public String equipment;
     public String environment;
     public String debrief;
 
@@ -33,14 +32,6 @@ public class Meta {
 
     public void setObjectives(List<Objective> objectives) {
         this.objectives = objectives;
-    }
-
-    public String getEquipment() {
-        return equipment;
-    }
-
-    public Script getScriptForNPC(Position position) {
-        return null;
     }
 
     public String getEnvironment() {

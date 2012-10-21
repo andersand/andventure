@@ -1,0 +1,27 @@
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww-wwwwwwwwwwwwwwwwwwwwwwwwww
+w                        dddddddd  w                w                w
+w                        d      d  w                w                w
+w                        d      d  w                w                w
+w        p               d      d  w                w         d      w
+w                        d      d  w                w                w
+w                        d      d  w       f        |                w
+w                        dddddddd  w                w        dd      w
+wwwwwwww-wwwwwwww                  wwwwwwwwwwwwwwwwww                w
+w               w        ddddd     w    d           w                w
+w               w            d     w                w        d       w
+w               w         d  d     w                w        d       w
+w               w         d        w                w                w
+w               w         dd       w                w                w
+w   ddddddd     w                  wwwwwwwww-wwwwwwww          ddddd w
+w   d  n        w                  w                          Cd     w
+wwwwwwwwwwww-wwww                  |                          Cd n   w
+w               w                  w                          Cd     w
+w               w                  w                           d     w
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+
+?META name=Testlevel.
+?META description=Contiguity Testlevel (Desk)
+?META objectives=defeatAllFoes
+?SCRIPT equip player ""
+?SCRIPT equip 43x6 "a"
+?SCRIPT exit 43x0

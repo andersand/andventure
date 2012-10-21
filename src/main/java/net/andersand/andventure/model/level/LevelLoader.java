@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * IO class
  * @author asn
  */
 public class LevelLoader {
@@ -41,15 +42,18 @@ public class LevelLoader {
         if (files.length == 0) {
             throw new IllegalStateException("No files found in " + Const.LEVELS_DIR);
         }
+        long t0 = System.currentTimeMillis();
         for (File file : files) {
             if (file.getName().endsWith("level")) {
                 try {
+                    long t1 = System.currentTimeMillis();
                     Level level = new Level(propertyHolder);
                     String levelData = Util.readFile(file);
-                    levelParser.validateCoarsely(levelData, file.getName());
-                    List<Element> elements = levelParser.parse(levelData, file.getName(), level);
-                    level.setElements(elements);
+                    Bounds dimension = levelParser.validateCoarsely(levelData, file.getName());
+                    level.setDimension(dimension);
+                    levelParser.parse(levelData, file.getName(), level);
                     levels.add(level);
+                    Util.log(file.getName() + " loaded in: " + (System.currentTimeMillis() - t1) + " ms.");
                 }
                 catch (IOException e) {
                     e.printStackTrace();
@@ -57,6 +61,7 @@ public class LevelLoader {
                 }
             }
         }
+        Util.log("Levels loaded in " + String.valueOf(System.currentTimeMillis() - t0) + " ms.");
         if (levels.isEmpty()) {
             throw new IllegalStateException("No levels have been loaded! Cannot continue without. Directory " + 
                                             Const.LEVELS_DIR + " needs to have at least one valid *.level file");
