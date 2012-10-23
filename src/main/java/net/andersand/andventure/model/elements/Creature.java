@@ -1,8 +1,7 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Const;
-import net.andersand.andventure.Util;
-import net.andersand.andventure.model.LevelCreatureInteraction;
+import net.andersand.andventure.model.CreatureLevelInteraction;
 import net.andersand.andventure.model.Position;
 import org.newdawn.slick.Image;
 
@@ -14,7 +13,7 @@ import org.newdawn.slick.Image;
 public abstract class Creature extends Element {
     
     protected Position goal;
-    protected LevelCreatureInteraction levelCreatureInteraction;
+    protected CreatureLevelInteraction creatureLevelInteraction;
     protected Image image;
 
     protected String equipmentString;
@@ -26,8 +25,8 @@ public abstract class Creature extends Element {
     protected void preDraw() {
     }
 
-    public void setLevelCreatureInteraction(LevelCreatureInteraction levelCreatureInteraction) {
-        this.levelCreatureInteraction = levelCreatureInteraction;
+    public void setCreatureLevelInteraction(CreatureLevelInteraction creatureLevelInteraction) {
+        this.creatureLevelInteraction = creatureLevelInteraction;
     }
 
     public String getEquipmentString() {
@@ -89,7 +88,7 @@ public abstract class Creature extends Element {
                 int changeY = Math.random() < .5 ? 0 : (Math.random() < .5 ? 1 : -1);
                 Position destination = new Position(position, changeX, changeY);
                 // todo MID use InteractionHandler here?
-                Element elementAtDestination = levelCreatureInteraction.look(destination);
+                Element elementAtDestination = creatureLevelInteraction.look(destination);
                 if (elementAtDestination == null) {
                     position = destination;
                 }

@@ -72,7 +72,6 @@ public abstract class Dialog implements Renderable {
     }
 
     protected void drawFixedText() {
-        // todo HIGH impl. (used by standard debrief summary)
         List<String> lines = getFixedText();
         for (int i=0; i<lines.size(); i++) {
             genericFont.drawString(position.getX() + 50, position.getY() + Const.FONT_HEIGHT + genericFont.getLineHeight() * (10 + i), lines.get(i), Color.black);

@@ -1,5 +1,10 @@
 package net.andersand.andventure;
 
+import net.andersand.andventure.model.Position;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author asn
  */
@@ -23,4 +28,27 @@ public class Const {
     public static final int FONT_HEIGHT = 50;
     public static final int FONT_INSET = 50;
     public static final String PREPEND_LOG = "ANDVENTURE";
+    public static Map<String, Position> spriteWallOffsetMap = new HashMap<String, Position>();
+    static {
+        spriteWallOffsetMap.put("r", pos(0, 0));
+        spriteWallOffsetMap.put("lrd", pos(1, 0));
+        spriteWallOffsetMap.put("lr", pos(2, 0));
+        spriteWallOffsetMap.put("ld", pos(3, 0));
+        spriteWallOffsetMap.put("", pos(0, 1));
+        spriteWallOffsetMap.put("ud", pos(1, 1));
+        spriteWallOffsetMap.put("rd", pos(2, 1));
+        spriteWallOffsetMap.put("lud", pos(3, 1));
+        spriteWallOffsetMap.put("d", pos(0, 2));
+        spriteWallOffsetMap.put("u", pos(1, 2));
+        spriteWallOffsetMap.put("ru", pos(2, 2));
+        spriteWallOffsetMap.put("lu", pos(3, 2));
+        spriteWallOffsetMap.put("rud", pos(0, 3));
+        spriteWallOffsetMap.put("lrud", pos(1, 3));
+        spriteWallOffsetMap.put("lru", pos(2, 3));
+        spriteWallOffsetMap.put("l", pos(3, 3));
+    }
+
+    private static Position pos(int x, int y) {
+        return new Position(x, y);
+    }
 }

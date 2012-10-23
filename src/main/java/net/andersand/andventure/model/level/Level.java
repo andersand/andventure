@@ -12,6 +12,7 @@ import net.andersand.andventure.view.dialogs.Briefing;
 import net.andersand.andventure.view.dialogs.Debriefing;
 import net.andersand.andventure.view.dialogs.Dialog;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import java.util.ArrayList;
@@ -20,24 +21,23 @@ import java.util.List;
 /**
  * @author asn
  */
-public class Level implements Renderable, LevelCreatureInteraction, LevelObjectiveInteraction  {
+public class Level implements Renderable, CreatureLevelInteraction, ObjectiveLevelInteraction, ElementLevelInteraction {
 
     protected Meta meta;
     protected Script script;
     protected List<Tile> floorTiles = new ArrayList<Tile>();
     protected List<Element> elements;
-
-    protected List<SpriteSheetElement> spriteSheetElements;
     protected List<Creature> creaturesAI = new ArrayList<Creature>();
     protected List<Foe> foes = new ArrayList<Foe>();
 
     protected Player player;
     protected PropertyHolder propertyHolder;
     protected Bounds dimension;
-    private SpriteSheet spriteSheet;
+    protected SpriteSheet spriteSheet;
 
     public Level(PropertyHolder propertyHolder) {
         this.propertyHolder = propertyHolder;
+        loadSpriteSheet();
     }
 
     /**
@@ -77,15 +77,7 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
 
     public void render() {
         drawFloorTiles();
-//        drawSpriteSheetElements();
-        drawOtherElements();
-    }
-
-    private void drawSpriteSheetElements() {
-        spriteSheet.startUse();
-        for (SpriteSheetElement sse : spriteSheetElements) {
-            sse.renderSprite();
-        }
+        drawElements();
     }
 
     protected void drawFloorTiles() {
@@ -94,11 +86,9 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
         }
     }
 
-    protected void drawOtherElements() {
+    protected void drawElements() {
         for (Element element : elements) {
-            if (!(element instanceof SpriteSheetElement)) {
-                element.render();
-            }
+            element.render();
         }
     }
 
@@ -107,7 +97,7 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
     }
 
     /**
-     * todo LOW consider a double array for indexed lookup, to improve performance if necessary.
+     * todo HIGH consider a double array for indexed lookup, to improve performance if necessary.
      * @return element at relative position, null if floor
      */
     public Element look(Position position) {
@@ -169,6 +159,16 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
             }
         }
     }
+    
+    protected void loadSpriteSheet() {
+        try {
+            spriteSheet = new SpriteSheet(Const.IMG_DIR + "spritesheet.png", Const.ELEMENT_SIZE_PIXELS, Const.ELEMENT_SIZE_PIXELS);
+        }
+        catch (SlickException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Failed to load the spritesheet");
+        }
+    }
 
     @Override
     public Position getPlayerPosition() {
@@ -203,6 +203,11 @@ public class Level implements Renderable, LevelCreatureInteraction, LevelObjecti
      */
     public void handleContiguousElements() {
         new ContiguityHandler();
+    }
+
+    @Override
+    public SpriteSheet getSpriteSheet() {
+        return spriteSheet;
     }
 
     protected class ContiguityHandler {

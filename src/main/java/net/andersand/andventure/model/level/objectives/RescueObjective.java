@@ -1,6 +1,6 @@
 package net.andersand.andventure.model.level.objectives;
 
-import net.andersand.andventure.model.LevelObjectiveInteraction;
+import net.andersand.andventure.model.ObjectiveLevelInteraction;
 
 /**
  * @author asn
@@ -8,7 +8,7 @@ import net.andersand.andventure.model.LevelObjectiveInteraction;
 public class RescueObjective extends Objective {
 
     @Override
-    protected boolean isObjectiveCompleted(LevelObjectiveInteraction levelObjectiveInteraction) {
+    protected boolean isObjectiveCompleted(ObjectiveLevelInteraction objectiveLevelInteraction) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

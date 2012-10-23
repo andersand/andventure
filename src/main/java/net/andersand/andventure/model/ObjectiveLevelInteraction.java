@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author asn
  */
-public interface LevelObjectiveInteraction {
+public interface ObjectiveLevelInteraction {
     
     public Position getPlayerPosition();
 

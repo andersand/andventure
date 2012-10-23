@@ -2,9 +2,9 @@ package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Const;
 import net.andersand.andventure.Util;
+import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.level.script.Script;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SpriteSheet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,27 +14,32 @@ import java.util.List;
  * 
  * @author asn
  */
-public class Wall extends Structure implements ContiguousElement, SpriteSheetElement {
+public class Wall extends Structure implements ContiguousElement {
 
-    protected SpriteSheet spriteSheet;
-    private int spriteOffsetX;
-    private int spriteOffsetY;
+    protected Image subImage;
+    protected int wallTypeOffsetX;
 
     @Override
     public Image getImage() {
-        return spriteSheet.getSubImage(spriteOffsetX, spriteOffsetY);
+        return subImage;
     }
 
     @Override
     public void init(char levelDataChar, Script script) {
-        String fileName = levelDataChar == 'w' ? "walls_stone.png" : "walls_wood.png";
-        spriteSheet = new SpriteSheet(Util.loadImage("elements/" + fileName), 15, 15);
-        
+        wallTypeOffsetX = levelDataChar == 'w' ? 4 : 0;
     }
 
     @Override
     public void align(Element left, Element right, Element up, Element down) {
-        // determine sprite offset
+        // todo HIGH determine sprite offset
+        String directionString = Util.directionString(
+                left != null, right != null, up != null, down != null);
+        Position p = getSpriteOffset(directionString);
+        subImage = getSpriteSheet().getSubImage(p.getX() + wallTypeOffsetX, p.getY());
+    }
+
+    protected Position getSpriteOffset(String directionString) {
+        return Const.spriteWallOffsetMap.get(directionString);
     }
 
     @Override
@@ -44,12 +49,4 @@ public class Wall extends Structure implements ContiguousElement, SpriteSheetEle
         return alignmentClasses;
     }
 
-    @Override
-    public void render() {
-    }
-
-    @Override
-    public void renderSprite() {
-        getImage().drawEmbedded(position.getX(), position.getY(), Const.ELEMENT_SIZE_PIXELS, Const.ELEMENT_SIZE_PIXELS);
-    }
 }

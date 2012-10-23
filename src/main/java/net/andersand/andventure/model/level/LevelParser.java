@@ -189,8 +189,9 @@ public class LevelParser {
                 Element element = (Element)cls.newInstance();
                 element.setPosition(new Position(xPosition, yPosition));
                 element.setPropertyHolder(propertyHolder);
+                element.setElementLevelInteraction(level);
                 if (element instanceof Creature) {
-                    ((Creature)element).setLevelCreatureInteraction(level);
+                    ((Creature)element).setCreatureLevelInteraction(level);
                 }
                 element.init(c, script);
                 elements.add(element);

@@ -1,8 +1,7 @@
 package net.andersand.andventure.model.level.objectives;
 
-import net.andersand.andventure.model.LevelObjectiveInteraction;
+import net.andersand.andventure.model.ObjectiveLevelInteraction;
 import net.andersand.andventure.model.Position;
-import net.andersand.andventure.model.elements.Player;
 
 /**
  * Defines various mission objectives.
@@ -17,16 +16,16 @@ public abstract class Objective {
     protected boolean completed;
     protected String value;
     protected Position destination;
-    protected LevelObjectiveInteraction levelObjectiveInteraction;
+    protected ObjectiveLevelInteraction objectiveLevelInteraction;
     
     public void setValue(String objectiveValue) {
         this.value = objectiveValue;
     }
 
-    public boolean isCompleted(LevelObjectiveInteraction levelObjectiveInteraction) {
-        return completed || isObjectiveCompleted(levelObjectiveInteraction);
+    public boolean isCompleted(ObjectiveLevelInteraction objectiveLevelInteraction) {
+        return completed || isObjectiveCompleted(objectiveLevelInteraction);
     }
 
-    protected abstract boolean isObjectiveCompleted(LevelObjectiveInteraction player);
+    protected abstract boolean isObjectiveCompleted(ObjectiveLevelInteraction player);
 
 }
