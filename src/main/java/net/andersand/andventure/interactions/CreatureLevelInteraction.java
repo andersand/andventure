@@ -1,7 +1,7 @@
-package net.andersand.andventure.model;
+package net.andersand.andventure.interactions;
 
+import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.Element;
-import net.andersand.andventure.model.level.Meta;
 
 /**
  * @author asn

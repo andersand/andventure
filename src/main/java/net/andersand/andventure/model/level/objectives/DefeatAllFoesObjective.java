@@ -1,6 +1,6 @@
 package net.andersand.andventure.model.level.objectives;
 
-import net.andersand.andventure.model.ObjectiveLevelInteraction;
+import net.andersand.andventure.interactions.ObjectiveLevelInteraction;
 import net.andersand.andventure.model.elements.Foe;
 
 import java.util.List;

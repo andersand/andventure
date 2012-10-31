@@ -43,7 +43,7 @@ public class Position {
             Position p = (Position)obj;
             return p.getX() == x && p.getY() == y;
         }
-        return super.equals(obj);
+        return obj != null && super.equals(obj);
     }
 
     public Position copy() {

@@ -4,6 +4,7 @@ import net.andersand.andventure.Const;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.Renderable;
+import net.andersand.andventure.view.GUIAccessor;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
@@ -23,7 +24,7 @@ public abstract class Dialog implements Renderable {
         genericFont = Util.loadFont("fatal-fury");
     }
 
-    public Dialog(Position position) {
+    protected Dialog(Position position) {
         this.position = position;
         loadGenericFont();
         randomEmblemChar = Util.randomAlphaNumeric();
@@ -61,7 +62,6 @@ public abstract class Dialog implements Renderable {
 
     protected void drawImage() {
         Image i = getImage();
-        // todo MID complete impl. (NPC dialogs will need this)
         i.draw(position.getX() + Const.PAPER_WIDTH - 100, position.getY() + Const.FONT_HEIGHT);
     }
 

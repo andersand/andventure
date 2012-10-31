@@ -2,6 +2,7 @@ package net.andersand.andventure;
 
 import net.andersand.andventure.model.level.LevelParser;
 import net.andersand.andventure.model.level.Meta;
+import net.andersand.andventure.view.GUI;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -16,7 +17,7 @@ public class LevelParserTest {
 
     @Test(dataProvider = "metaDataProvider")
     public void parseMetaDataSetsMetadataFields(List<String> metadataLines) throws IllegalAccessException, InstantiationException {
-        LevelParser parser = new LevelParser(new PropertyHolder());
+        LevelParser parser = new LevelParser(new GUI());
         Meta meta = parser.parseMetaData(metadataLines);
         assert meta.getName() != null;
         assert meta.getDescription() != null;

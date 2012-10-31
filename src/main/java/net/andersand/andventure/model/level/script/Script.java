@@ -1,6 +1,7 @@
 package net.andersand.andventure.model.level.script;
 
 import net.andersand.andventure.model.Position;
+import net.andersand.andventure.model.elements.Neutral;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +10,14 @@ import java.util.List;
  * @author asn
  */
 public class Script {
-    List<Action> actions;
+    protected List<Statement> statements;
 
     public Script() {
-        this.actions = new ArrayList<Action>();
+        this.statements = new ArrayList<Statement>();
     }
 
-    public void addAction(Action action) {
-        this.actions.add(action);
+    public void addStatement(Statement statement) {
+        this.statements.add(statement);
     }
 
     /**
@@ -24,20 +25,30 @@ public class Script {
      * @return assigned equipmentString for position or player
      */
     public String getAssignedEquipment(Position position) {
-        for (Action action : actions) {
-            if (action instanceof EquipAction
-                    && (
-                        (position == null && action.getPosition() == null) ||
-                        position.equals(action.getPosition())
-                    )) {
-
-                return removeQuotes(((EquipAction) action).getEquipment());
+        for (Statement statement : statements) {
+            if (statement instanceof EquipStatement && positionCompares(position, statement)) {
+                return ((EquipStatement) statement).getEquipment();
             }
         }
         return null;
     }
 
-    private String removeQuotes(String equipment) {
-        return equipment.replace("\"", "");
+    public boolean positionCompares(Position position, Statement statement) {
+        return (position == null && statement.getPosition() == null) ||
+               (position != null && position.equals(statement.getPosition()));
+    }
+
+    public List<Statement> initNPC(Neutral neutral) {
+        return statementsForPosition(neutral.getPosition());
+    }
+
+    public List<Statement> statementsForPosition(Position position) {
+        List<Statement> statementsForPosition = new ArrayList<Statement>();
+        for (Statement statement : statements) {
+            if (positionCompares(position, statement)) {
+                statementsForPosition.add(statement);
+            }
+        }
+        return statementsForPosition;
     }
 }

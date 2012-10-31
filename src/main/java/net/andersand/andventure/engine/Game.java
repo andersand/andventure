@@ -1,9 +1,9 @@
 package net.andersand.andventure.engine;
 
 import net.andersand.andventure.Const;
-import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.model.level.LevelLoader;
+import net.andersand.andventure.view.GUI;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.*;
 
@@ -24,12 +24,13 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer container) throws SlickException {
-        PropertyHolder propertyHolder = new PropertyHolder();
-        LevelLoader levelLoader = new LevelLoader(propertyHolder);
+        GUI gui = new GUI();
+        LevelLoader levelLoader = new LevelLoader(gui);
         Bounds bounds = levelLoader.loadLevels();
         bounds = Util.getAdjustedBounds(bounds);
+        gui.init(bounds);
         appGameContainer.setDisplayMode(bounds.width, bounds.height, false);
-        controller = new Controller(propertyHolder, bounds);
+        controller = new Controller(bounds, gui);
         controller.setLevels(levelLoader.getLevels());
         controller.init();
     }
@@ -48,6 +49,10 @@ public class Game extends BasicGame {
                 break;
             case INIT_COMPLETE:
                 controller.startGame();
+                break;
+            case CHAINED_STATEMENT:
+                controller.executeChainedStatement();
+                break;
         }
         Display.sync(Const.FPS);
     }
@@ -56,10 +61,17 @@ public class Game extends BasicGame {
     public void render(GameContainer container, Graphics g) throws SlickException {
         switch (controller.getGameState()) {
             case IN_GAME :
+                // intentional fall through
+            case CHAINED_STATEMENT:
                 controller.renderLevel();
+                break;
+            case SHOW_DIALOG:
+                controller.renderLevel();
+                controller.renderDialog();
                 break;
             case BRIEFING:
                 controller.renderBriefing();
+                break;
         }
     }
 

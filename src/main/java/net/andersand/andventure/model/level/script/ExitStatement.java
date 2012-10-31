@@ -5,10 +5,15 @@ import net.andersand.andventure.model.Position;
 /**
  * @author asn
  */
-public class DialogAction extends Action {
+public class ExitStatement extends Statement {
+    @Override
+    public ExecutionResult execute() {
+        return null;
+    }
 
     @Override
     protected void parseValue() {
+        parsePosition(valueWords.get(0));
     }
 
     @Override

@@ -1,10 +1,14 @@
 package net.andersand.andventure.model.level;
 
 import net.andersand.andventure.Const;
-import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.engine.Bounds;
-import net.andersand.andventure.model.*;
+import net.andersand.andventure.interactions.CreatureLevelInteraction;
+import net.andersand.andventure.interactions.ElementLevelInteraction;
+import net.andersand.andventure.interactions.ObjectiveLevelInteraction;
+import net.andersand.andventure.model.Position;
+import net.andersand.andventure.model.Renderable;
+import net.andersand.andventure.model.Tile;
 import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.objectives.Objective;
 import net.andersand.andventure.model.level.script.Script;
@@ -31,12 +35,10 @@ public class Level implements Renderable, CreatureLevelInteraction, ObjectiveLev
     protected List<Foe> foes = new ArrayList<Foe>();
 
     protected Player player;
-    protected PropertyHolder propertyHolder;
     protected Bounds dimension;
     protected SpriteSheet spriteSheet;
 
-    public Level(PropertyHolder propertyHolder) {
-        this.propertyHolder = propertyHolder;
+    public Level() {
         loadSpriteSheet();
     }
 

@@ -8,6 +8,7 @@ import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.objectives.*;
 import net.andersand.andventure.model.level.script.Script;
+import net.andersand.andventure.view.GUIAccessor;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -19,16 +20,15 @@ import java.util.*;
  */
 public class LevelParser {
 
-    protected PropertyHolder propertyHolder;
-    
     protected Map<String, Class<? extends Element>> elementLookupTable = new HashMap<String, Class<? extends Element>>();
     protected Map<String, Field> metaLookupTable = new HashMap<String, Field>();
     protected Map<String, Class<? extends Objective>> objectivesLookupTable = new HashMap<String, Class<? extends Objective>>();
     protected int tallestLevel;
     protected int widestLevel;
+    private GUIAccessor guiAccessor;
 
-    public LevelParser(PropertyHolder propertyHolder) {
-        this.propertyHolder = propertyHolder;
+    public LevelParser(GUIAccessor guiAccessor) {
+        this.guiAccessor = guiAccessor;
         populateLookupTables();
     }
 
@@ -68,7 +68,7 @@ public class LevelParser {
      * Goes through level data and creates game elements when appropriate.
      * May also perform som validation
      */
-    public List<Element> parse(String levelData, String levelFileName, Level level) {
+    public void parse(String levelData, String levelFileName, Level level) {
         List<String> lines = getLines(levelData);
         List<String> metaLines = getMetaLines(lines);
         List<String> scriptLines = getScriptLines(lines);
@@ -88,11 +88,10 @@ public class LevelParser {
             e.printStackTrace();
             throwException("level.parsing.failed", levelFileName);
         }
-        return elements;
     }
 
     protected Script parseScript(List<String> scriptLines) throws IllegalAccessException, InstantiationException {
-        return new ScriptParser().parse(scriptLines);
+        return new ScriptParser(guiAccessor).parse(scriptLines);
     }
 
     public Meta parseMetaData(List<String> metaLines) throws IllegalAccessException, InstantiationException {
@@ -188,7 +187,6 @@ public class LevelParser {
             if (cls != null) {
                 Element element = (Element)cls.newInstance();
                 element.setPosition(new Position(xPosition, yPosition));
-                element.setPropertyHolder(propertyHolder);
                 element.setElementLevelInteraction(level);
                 if (element instanceof Creature) {
                     ((Creature)element).setCreatureLevelInteraction(level);
@@ -243,7 +241,7 @@ public class LevelParser {
     }
 
     protected void throwException(String propertyKey, String... parameters) {
-        String text = propertyHolder.get(propertyKey);
+        String text = PropertyHolder.get(propertyKey);
         for (String parameter : parameters) {
             text = text.replaceFirst("\\$", parameter);
         }

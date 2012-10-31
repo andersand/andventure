@@ -1,11 +1,13 @@
 package net.andersand.andventure.engine;
 
-import net.andersand.andventure.Const;
 import net.andersand.andventure.PropertyHolder;
+import net.andersand.andventure.interactions.ComplexInteraction;
+import net.andersand.andventure.interactions.DialogInteraction;
+import net.andersand.andventure.interactions.Interaction;
 import net.andersand.andventure.model.elements.Creature;
 import net.andersand.andventure.model.elements.Player;
 import net.andersand.andventure.model.level.Level;
-import net.andersand.andventure.model.level.LevelLoader;
+import net.andersand.andventure.model.level.script.Statement;
 import net.andersand.andventure.view.GUI;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -28,11 +30,11 @@ public class Controller {
     protected Bounds windowBounds;
     protected GUI gui;
     protected GameState gameState;
-    protected PropertyHolder propertyHolder;
+    protected ComplexInteraction complexInteraction;
 
-    public Controller(PropertyHolder propertyHolder, Bounds bounds) {
-        this.propertyHolder = propertyHolder;
+    public Controller(Bounds bounds, GUI gui) {
         this.windowBounds = bounds;
+        this.gui = gui;
     }
 
     public void setLevels(List<Level> levels) {
@@ -40,7 +42,6 @@ public class Controller {
     }
     
     public void init() {
-        gui = new GUI(propertyHolder, windowBounds);
         gameState = GameState.INIT_COMPLETE;
     }
     
@@ -84,7 +85,14 @@ public class Controller {
 
         InteractionHandler handler = new InteractionHandler(input, currentLevel);
         if (handler.isMoveRequested()) {
-            handler.perform(playerElement);
+            Interaction interaction = handler.perform(playerElement);
+            if (interaction instanceof ComplexInteraction) {
+                gameState = GameState.SHOW_DIALOG;
+                complexInteraction = (ComplexInteraction) interaction;
+                if (interaction instanceof DialogInteraction) {
+                    gui.setDialog(((DialogInteraction) interaction).getDialog());
+                }
+            }
         }
     }
 
@@ -95,14 +103,16 @@ public class Controller {
             gameState = GameState.IN_GAME;
             startLevel();
         }
-        if (input.isKeyPressed(Input.KEY_Q)) {
+        else if (gameState.equals(GameState.SHOW_DIALOG) && input.isKeyDown(Input.KEY_SPACE)) {
+            gameState = GameState.CHAINED_STATEMENT;
+        }
+        else if (input.isKeyPressed(Input.KEY_Q)) {
             System.exit(0); // todo LOW Quit game more nicely
         }
     }
 
     protected void handleDeveloperMode(Input input) {
-        if (Const.DEVELOPER_MODE && gameState.equals(GameState.IN_GAME)) {
-            
+        if (PropertyHolder.getBoolean("developer.mode") && gameState.equals(GameState.IN_GAME)) {
             if (input.isKeyPressed(Input.KEY_ADD)) {
                 gotoNextLevel();
             }
@@ -134,11 +144,31 @@ public class Controller {
     }
 
     public void renderBriefing() {
-        gui.renderDialog();
+        gui.renderBriefingDialog();
     }
 
     public void renderLevel() {
         currentLevel.render();
     }
 
+    public void renderDialog() {
+        gui.renderDialog();
+    }
+
+    public void executeChainedStatement() {
+        if (complexInteraction != null) {
+            Statement chainedStatement = complexInteraction.getNextStatement();
+            if (chainedStatement != null) {
+                chainedStatement.execute();
+            }
+            else {
+                // end of statement chain
+                complexInteraction = null;
+                gameState = GameState.IN_GAME;
+            }
+        }
+        else {
+            gameState = GameState.IN_GAME;
+        }
+    }
 }

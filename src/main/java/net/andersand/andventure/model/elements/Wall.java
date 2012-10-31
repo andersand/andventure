@@ -31,7 +31,6 @@ public class Wall extends Structure implements ContiguousElement {
 
     @Override
     public void align(Element left, Element right, Element up, Element down) {
-        // todo HIGH determine sprite offset
         String directionString = Util.directionString(
                 left != null, right != null, up != null, down != null);
         Position p = getSpriteOffset(directionString);

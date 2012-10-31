@@ -1,4 +1,4 @@
-package net.andersand.andventure.model;
+package net.andersand.andventure.interactions;
 
 import org.newdawn.slick.SpriteSheet;
 

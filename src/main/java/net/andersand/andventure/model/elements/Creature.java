@@ -1,7 +1,7 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Const;
-import net.andersand.andventure.model.CreatureLevelInteraction;
+import net.andersand.andventure.interactions.CreatureLevelInteraction;
 import net.andersand.andventure.model.Position;
 import org.newdawn.slick.Image;
 
@@ -23,6 +23,10 @@ public abstract class Creature extends Element {
 
     @Override
     protected void preDraw() {
+    }
+
+    @Override
+    protected void postDraw() {
     }
 
     public void setCreatureLevelInteraction(CreatureLevelInteraction creatureLevelInteraction) {
@@ -81,25 +85,28 @@ public abstract class Creature extends Element {
             return;
         }
         if (goal == null) {
-            // no goal means idling
-            boolean willAttemptMove = Math.random() < Const.AI_IDLE_CHANCE_TO_MOVE;
-            if (willAttemptMove) {
-                int changeX = Math.random() < .5 ? 0 : (Math.random() < .5 ? 1 : -1);
-                int changeY = Math.random() < .5 ? 0 : (Math.random() < .5 ? 1 : -1);
-                Position destination = new Position(position, changeX, changeY);
-                // todo MID use InteractionHandler here?
-                Element elementAtDestination = creatureLevelInteraction.look(destination);
-                if (elementAtDestination == null) {
-                    position = destination;
-                }
-                else if (this instanceof Foe) {
-                    // todo LOW decide what to go for: should creatures idly open doors?
-                    //         right now they just move through doors if they have been opened by someone
-                    if (elementAtDestination instanceof Door) {
-                        Door door = (Door) elementAtDestination;
-                        if (door.isPassableNow()) {
-                            position = destination;
-                        }
+            idle();
+        }
+    }
+
+    protected void idle() {
+        boolean willAttemptMove = Math.random() < Const.AI_IDLE_CHANCE_TO_MOVE;
+        if (willAttemptMove) {
+            int changeX = Math.random() < .5 ? 0 : (Math.random() < .5 ? 1 : -1);
+            int changeY = Math.random() < .5 ? 0 : (Math.random() < .5 ? 1 : -1);
+            Position destination = new Position(position, changeX, changeY);
+            // todo MID use InteractionHandler here?
+            Element elementAtDestination = creatureLevelInteraction.look(destination);
+            if (elementAtDestination == null) {
+                position = destination;
+            }
+            else if (this instanceof Foe) {
+                // todo LOW decide what to go for: should creatures idly open doors?
+                //         right now they just move through doors if they have been opened by someone
+                if (elementAtDestination instanceof Door) {
+                    Door door = (Door) elementAtDestination;
+                    if (door.isPassableNow()) {
+                        position = destination;
                     }
                 }
             }
@@ -108,25 +115,12 @@ public abstract class Creature extends Element {
 
     protected abstract boolean preventMove();
 
-    public void interact(Element subjectElement) {
-        if (subjectElement instanceof Creature) {
-            Creature subject = (Creature) subjectElement;
-            subject.doInteraction();
-        }
-    }
-
-    /**
-     * Some creatures can be interacted with, eg Neutral, and should have an 
-     * implementation og this method.
-     */
-    protected abstract void doInteraction();    
-
     public void attack(Element subjectElement) {
         if (subjectElement instanceof Creature) {
             Creature subject = (Creature) subjectElement;
             int attack = attack();
             subject.defend(attack);
-            // todo MID impl. counter-attack
+            // todo HIGH impl. counter-attack
         }
     }
     

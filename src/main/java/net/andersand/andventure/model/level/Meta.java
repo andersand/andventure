@@ -1,8 +1,6 @@
 package net.andersand.andventure.model.level;
 
-import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.level.objectives.Objective;
-import net.andersand.andventure.model.level.script.Script;
 
 import java.util.List;
 

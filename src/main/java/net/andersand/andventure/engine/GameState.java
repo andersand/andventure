@@ -8,5 +8,7 @@ public enum GameState {
     PAUSED,
     IN_GAME,
     LEVEL_COMPLETE,
+    SHOW_DIALOG,
+    CHAINED_STATEMENT,
     BRIEFING
 }

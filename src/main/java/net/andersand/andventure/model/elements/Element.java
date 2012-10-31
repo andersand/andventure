@@ -1,8 +1,7 @@
 package net.andersand.andventure.model.elements;
 
-import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.Util;
-import net.andersand.andventure.model.ElementLevelInteraction;
+import net.andersand.andventure.interactions.ElementLevelInteraction;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.Renderable;
 import net.andersand.andventure.model.level.script.Script;
@@ -14,7 +13,6 @@ import org.newdawn.slick.SpriteSheet;
  */
 public abstract class Element implements Renderable {
 
-    protected PropertyHolder propertyHolder;
     protected ElementLevelInteraction elementLevelInteraction;
 
     protected Position position;
@@ -55,10 +53,19 @@ public abstract class Element implements Renderable {
         }
         preDraw();
         getImage().draw(x, y);
+        postDraw();
     }
 
+    /**
+     * Draw anything to be under the element here
+     */
     protected abstract void preDraw();
 
+    /**
+     * Draw anything to be over the element here
+     */
+    protected abstract void postDraw();
+    
     public void setElementLevelInteraction(ElementLevelInteraction elementLevelInteraction) {
         this.elementLevelInteraction = elementLevelInteraction;
     }
@@ -67,10 +74,6 @@ public abstract class Element implements Renderable {
         return elementLevelInteraction.getSpriteSheet();
     }
     
-    public void setPropertyHolder(PropertyHolder propertyHolder) {
-        this.propertyHolder = propertyHolder;
-    }
-
     @Override
     public String toString() {
         return this.getClass().getSimpleName();

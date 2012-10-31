@@ -2,8 +2,6 @@ package net.andersand.andventure;
 
 import net.andersand.andventure.engine.Bounds;
 import net.andersand.andventure.model.Position;
-import net.andersand.andventure.model.elements.Table;
-import net.andersand.andventure.model.elements.Wall;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
@@ -21,7 +19,11 @@ import java.util.*;
  * @author asn
  */
 public class Util {
-    
+
+    public static String removeQuotes(String equipment) {
+        return equipment.replace("\"", "");
+    }
+
     public static String readFile(File file) throws IOException {
         FileInputStream stream = new FileInputStream(file);
         try {

@@ -1,6 +1,8 @@
 package net.andersand.andventure.model.elements;
 
 /**
+ * Inventory items
+ * Consider the need for this interface
  * @author asn
  */
 public interface Item {

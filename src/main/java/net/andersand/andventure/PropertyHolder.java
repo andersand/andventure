@@ -10,9 +10,9 @@ import java.util.Properties;
  */
 public class PropertyHolder {
 
-    Properties properties;
+    private static Properties properties;
 
-    public String get(String key) {
+    public static String get(String key) {
         if (properties == null) {
             properties = new Properties();
             try {
@@ -29,7 +29,7 @@ public class PropertyHolder {
         return properties.getProperty(key);
     }
 
-    public boolean getBoolean(String key) {
+    public static boolean getBoolean(String key) {
         return Boolean.valueOf(get(key));
     }
     

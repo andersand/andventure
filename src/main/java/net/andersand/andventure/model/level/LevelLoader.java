@@ -1,10 +1,9 @@
 package net.andersand.andventure.model.level;
 
 import net.andersand.andventure.Const;
-import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.engine.Bounds;
-import net.andersand.andventure.model.elements.Element;
+import net.andersand.andventure.view.GUIAccessor;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,11 +18,9 @@ public class LevelLoader {
 
     protected LevelParser levelParser;
     protected List<Level> levels = new ArrayList<Level>();
-    protected PropertyHolder propertyHolder;
 
-    public LevelLoader(PropertyHolder propertyHolder) {
-        this.propertyHolder = propertyHolder;
-        levelParser = new LevelParser(propertyHolder);
+    public LevelLoader(GUIAccessor guiAccessor) {
+        levelParser = new LevelParser(guiAccessor);
     }
 
     public List<Level> getLevels() {
@@ -47,7 +44,7 @@ public class LevelLoader {
             if (file.getName().endsWith("level")) {
                 try {
                     long t1 = System.currentTimeMillis();
-                    Level level = new Level(propertyHolder);
+                    Level level = new Level();
                     String levelData = Util.readFile(file);
                     Bounds dimension = levelParser.validateCoarsely(levelData, file.getName());
                     level.setDimension(dimension);

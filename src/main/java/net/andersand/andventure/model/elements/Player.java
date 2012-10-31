@@ -23,12 +23,6 @@ public class Player extends Creature {
     }
 
     @Override
-    protected void doInteraction() {
-        // todo LOW perhaps when a creature approaches the player he should be presented something
-    }
-
-    @Override
     protected void setDeadImage() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

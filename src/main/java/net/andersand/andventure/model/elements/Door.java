@@ -1,6 +1,8 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Util;
+import net.andersand.andventure.interactions.Interaction;
+import net.andersand.andventure.interactions.SimpleInteration;
 import net.andersand.andventure.model.level.script.Script;
 import org.newdawn.slick.Image;
 
@@ -33,7 +35,7 @@ public class Door extends Structure implements Interactable, Passable {
     }
 
     @Override
-    public void interact() {
+    public Interaction interact(Creature actor) {
         if (state.equals(State.OPEN)) {
             state = State.CLOSED;
             position.change(-1, 0);
@@ -43,6 +45,7 @@ public class Door extends Structure implements Interactable, Passable {
             position.change(1, 0); // meh - this makes the wall next to the door passable :/
         }
         Util.log("Using door " + state);
+        return SimpleInteration.INTERACTION_PERFORMED;
     }
 
     @Override

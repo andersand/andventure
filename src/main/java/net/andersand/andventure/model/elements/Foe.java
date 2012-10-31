@@ -27,11 +27,6 @@ public class Foe extends Creature implements Passable {
     }
 
     @Override
-    protected void doInteraction() {
-        // Intentionally empty: Foes can only be attacked for now
-    }
-
-    @Override
     protected void setDeadImage() {
         image = Util.loadElementImage("en_dead");
     }

@@ -1,11 +1,15 @@
 package net.andersand.andventure.engine;
 
+import net.andersand.andventure.interactions.Interaction;
+import net.andersand.andventure.interactions.SimpleInteration;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.Level;
 import org.newdawn.slick.Input;
 
 /**
+ * Consider refactoring this somehow, as it now creates a lot of these instances
+ * 
  * @author asn
  */
 public class InteractionHandler {
@@ -36,34 +40,29 @@ public class InteractionHandler {
         moveRequested = !(changeX == 0 && changeY == 0);
     }
 
-    public InteractionResult perform(Creature creature) {
+    public Interaction perform(Creature actor) {
         // you gotta look before you go bro...
         // or else you might get stuck in a wall or something...
-        Position lookingDestination = creature.look(changeX, changeY);
+        Position lookingDestination = actor.look(changeX, changeY);
         Element elementAtDestination = currentLevel.look(lookingDestination);
         if (elementAtDestination == null) {
-            creature.move(changeX, changeY);
-            return InteractionResult.MOVE_PERFORMED;
+            actor.move(changeX, changeY);
+            return SimpleInteration.MOVE_PERFORMED;
         }
         if (elementAtDestination instanceof Passable) {
             Passable passable = (Passable) elementAtDestination;
             if (passable.isPassableNow()) {
-                creature.move(changeX, changeY);
-                return InteractionResult.MOVE_PERFORMED;
+                actor.move(changeX, changeY);
+                return SimpleInteration.MOVE_PERFORMED;
             }
         }
-        // todo HIGH handle creature interaction (talk to npc), and picking up objects
         if (elementAtDestination instanceof Interactable) {
-            ((Interactable) elementAtDestination).interact();
-            return InteractionResult.INTERACTION_PERFORMED;
+            return ((Interactable) elementAtDestination).interact(actor);
         }
         if (elementAtDestination instanceof Foe) {
-            creature.attack(elementAtDestination);
+            actor.attack(elementAtDestination);
         }
-        if (elementAtDestination instanceof Neutral) {
-            creature.interact(elementAtDestination);
-        }
-        return InteractionResult.MOVE_PROHIBITED;
+        return SimpleInteration.MOVE_PROHIBITED;
     }
 
     public boolean isMoveRequested() {

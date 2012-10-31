@@ -1,12 +1,7 @@
 package net.andersand.andventure.view.dialogs;
 
-import net.andersand.andventure.Const;
-import net.andersand.andventure.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.level.Level;
-import net.andersand.andventure.model.level.Meta;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
 
 import java.util.List;

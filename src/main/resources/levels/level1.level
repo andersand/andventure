@@ -22,8 +22,8 @@ wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 ?META name=Tavern
 ?META description=You wake up, not remembering how you got there... Let's get out of here!
 ?META objectives=defeatAllFoes
+
 ?SCRIPT equip player ""
 ?SCRIPT equip 43x6 "a"
-?SCRIPT dialog 7x15 charley.gif Charley "Hello there... Here, take this sword. You'll need it if you want to get out of here!"
+?SCRIPT dialog 7x15 charley.png Charley "Careful, there's at least one guy left. Here, take this sword... Good luck!"
 ?SCRIPT give 7x15 "s"
-?SCRIPT exit 43x0
