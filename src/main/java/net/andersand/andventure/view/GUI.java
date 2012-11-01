@@ -10,11 +10,11 @@ import net.andersand.andventure.view.dialogs.Dialog;
 /**
  * @author asn
  */
-public class GUI implements Renderable, GUIAccessor {
+public class GUI implements Renderable {
 
     protected Dialog briefingDialog; // used for briefing and debriefing
     protected Bounds windowBounds;
-    protected Position briefingPosition;
+    protected Position dialogPosition;
     protected Dialog dialog; // npc or other dialog
 
     public GUI() {
@@ -26,11 +26,11 @@ public class GUI implements Renderable, GUIAccessor {
     }
 
     public void createBriefing(Level level) {
-        briefingDialog = level.getBriefing(briefingPosition);
+        briefingDialog = level.getBriefing(dialogPosition);
     }
 
     public void createDebriefing(Level level) {
-        briefingDialog = level.getDebriefing(briefingPosition);
+        briefingDialog = level.getDebriefing(dialogPosition);
     }
 
     public void render() {
@@ -41,20 +41,19 @@ public class GUI implements Renderable, GUIAccessor {
     }
 
     protected void calculatePositionForBriefing() {
-        briefingPosition = new Position(0, 0);
+        dialogPosition = new Position(0, 0);
         if (windowBounds.width > Const.PAPER_WIDTH) {
             int newX = (windowBounds.width/2)-(Const.PAPER_WIDTH /2);
-            briefingPosition.setX(newX);
+            dialogPosition.setX(newX);
         }
         if (windowBounds.height > Const.PAPER_HEIGHT) {
             int newY = (windowBounds.height/2)-(Const.PAPER_HEIGHT /2);
-            briefingPosition.setY(newY);
+            dialogPosition.setY(newY);
         }
     }
 
-    @Override
     public Position getDialogPosition() {
-        return briefingPosition;
+        return dialogPosition;
     }
 
     public void setDialog(Dialog dialog) {

@@ -1,6 +1,5 @@
 package net.andersand.andventure.interactions;
 
-import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.level.script.DialogStatement;
 import net.andersand.andventure.view.dialogs.Dialog;
 

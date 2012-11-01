@@ -1,25 +1,33 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.Const;
+import net.andersand.andventure.Util;
 import net.andersand.andventure.interactions.CreatureLevelInteraction;
+import net.andersand.andventure.model.Inventory;
 import net.andersand.andventure.model.Position;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 /**
  * Creatures move independently and may perform actions
  * 
  * @author asn
  */
-public abstract class Creature extends Element {
+public abstract class Creature extends Element implements Passable  {
     
     protected Position goal;
     protected CreatureLevelInteraction creatureLevelInteraction;
-    protected Image image;
-
-    protected String equipmentString;
+    protected Image bodyImage;
+    protected Inventory inventory;
     protected int attack;
     protected int defense;
     protected boolean dead;
+    protected Weapon equippedWeapon;
+
+    protected Creature() {
+        inventory = new Inventory();
+        bodyImage = Util.loadElementImage(getBodyImage());
+    }
 
     @Override
     protected void preDraw() {
@@ -27,14 +35,16 @@ public abstract class Creature extends Element {
 
     @Override
     protected void postDraw() {
+        for (Wearable wearable : inventory.getWearables()) {
+            draw(wearable.getImage());
+        }
+        if (equippedWeapon != null) {
+            draw(equippedWeapon.getImage());
+        }
     }
 
     public void setCreatureLevelInteraction(CreatureLevelInteraction creatureLevelInteraction) {
         this.creatureLevelInteraction = creatureLevelInteraction;
-    }
-
-    public String getEquipmentString() {
-        return equipmentString;
     }
 
     /**
@@ -101,6 +111,7 @@ public abstract class Creature extends Element {
                 position = destination;
             }
             else if (this instanceof Foe) {
+                // todo MID refactor: replace instanceof checking with abstract method call.
                 // todo LOW decide what to go for: should creatures idly open doors?
                 //         right now they just move through doors if they have been opened by someone
                 if (elementAtDestination instanceof Door) {
@@ -115,52 +126,60 @@ public abstract class Creature extends Element {
 
     protected abstract boolean preventMove();
 
+    protected abstract String getDeadImage();
+
+    protected abstract String getBodyImage();
+    
     public void attack(Element subjectElement) {
         if (subjectElement instanceof Creature) {
             Creature subject = (Creature) subjectElement;
-            int attack = attack();
             subject.defend(attack);
-            // todo HIGH impl. counter-attack
+            // todo MID impl. counter-attack
         }
-    }
-    
-    @Override
-    public Image getImage() {
-        return image;
     }
 
-    protected int calculateDefense(String equipmentString) {
-        int defense = 0;
-        if (equipmentString.contains("a")) {
-            defense++;
-        }
-        if (equipmentString.contains("h")) {
-            defense++;
-        }
-        return defense;
+    @Override
+    public Image getImage() throws SlickException {
+        return bodyImage;
     }
-    
-    protected void initAttackDefense() {
-        attack = equipmentString.contains("s") ? 2 : 1;
-        defense = calculateDefense(equipmentString);
+
+    protected void calculateDefense() {
+        defense = 0;
+        for (Wearable w : inventory.getWearables()) {
+            defense += w.getDefenseValue();
+        }
+    }
+
+    private void calculateAttack() {
+        attack = 1;
+        if (equippedWeapon != null) {
+            attack += equippedWeapon.getAttackValue();
+        }
     }
 
     public void defend(int attack) {
         if (defense < attack) {
-            setDeadImage();
+            bodyImage = Util.loadElementImage(getDeadImage());
             dead = true;
         }
-    }
-
-    protected int attack() {
-        return attack;
     }
     
     public boolean isDead() {
         return dead;
     }
-    
-    protected abstract void setDeadImage();
 
+    public void equip(String objectString) {
+        inventory.addObjectsFromString(objectString);
+        if (equippedWeapon == null) {
+            equippedWeapon = inventory.getBestWeapon();
+        }
+        calculateAttack();
+        calculateDefense();
+    }
+
+    @Override
+    public boolean isPassableNow() {
+        return dead; // allow walking over dead creatures
+    }
 
 }

@@ -6,6 +6,7 @@ import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.Renderable;
 import net.andersand.andventure.model.level.script.Script;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 /**
@@ -34,26 +35,32 @@ public abstract class Element implements Renderable {
 
     /**
      * Elements may have more than one state, and require different images depending on this state.
-     * This method returns the current image for rendering the next frame. That image may be a regular image
+     * This method returns the current image for rendering the next frame. That image may be a regular image,
      * or a sub-image from a spritesheet.
+     * Composite images (eg. armor drawn over player) should be made using postDraw()
+     * 
      * @return current image of element
      */
-    public abstract Image getImage();
+    public abstract Image getImage() throws SlickException;
     
     public abstract void init(char levelDataChar, Script script);
 
-    public void render() {
+    public void render() throws SlickException {
         if (position == null) {
             return; // some elements may not be positioned (eg. worn)
         }
-        int x = Util.getElementPixelX(position);
-        int y = Util.getElementPixelY(position);
         if (getImage() == null) {
             return;
         }
         preDraw();
-        getImage().draw(x, y);
+        draw(getImage());
         postDraw();
+    }
+
+    protected void draw(Image image) {
+        int x = Util.getElementPixelX(position);
+        int y = Util.getElementPixelY(position);
+        image.draw(x, y);
     }
 
     /**

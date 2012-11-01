@@ -77,7 +77,7 @@ public class Level implements Renderable, CreatureLevelInteraction, ObjectiveLev
         this.elements = elementsOrderedSpecifically;        
     }
 
-    public void render() {
+    public void render() throws SlickException {
         drawFloorTiles();
         drawElements();
     }
@@ -88,7 +88,7 @@ public class Level implements Renderable, CreatureLevelInteraction, ObjectiveLev
         }
     }
 
-    protected void drawElements() {
+    protected void drawElements() throws SlickException {
         for (Element element : elements) {
             element.render();
         }

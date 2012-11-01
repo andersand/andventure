@@ -1,7 +1,7 @@
 package net.andersand.andventure.model.level.script;
 
 import net.andersand.andventure.model.Position;
-import net.andersand.andventure.view.GUIAccessor;
+import net.andersand.andventure.view.ScriptAccessor;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public abstract class Statement {
     protected Position position;
     protected String valueRaw;
     protected List<String> valueWords;
-    protected GUIAccessor guiAccessor;
+    protected ScriptAccessor scriptAccessor;
 
     public void setValueRaw(String value) {
         this.valueRaw = value.trim();
@@ -30,6 +30,10 @@ public abstract class Statement {
         parseValue();
     }
 
+    /**
+     * @return null if everything is taken care of by impl. method, 
+     * otherwise return an ExecutionResult to be processed later
+     */
     public abstract ExecutionResult execute();
     
     /**
@@ -61,7 +65,7 @@ public abstract class Statement {
         this.position = position;
     }
 
-    public void setGuiAccessor(GUIAccessor guiAccessor) {
-        this.guiAccessor = guiAccessor;
+    public void setScriptAccessor(ScriptAccessor scriptAccessor) {
+        this.scriptAccessor = scriptAccessor;
     }
 }

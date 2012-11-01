@@ -1,17 +1,17 @@
 package net.andersand.andventure.model.level.script;
 
 import net.andersand.andventure.Util;
-import net.andersand.andventure.model.Position;
 
 /**
  * @author asn
  */
 public class GiveStatement extends Statement {
 
-    String equipment;
+    protected String equipment;
 
     @Override
     public ExecutionResult execute() {
+        scriptAccessor.getPlayer().equip(equipment);
         return null;
     }
 

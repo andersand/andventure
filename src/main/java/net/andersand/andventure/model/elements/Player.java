@@ -11,10 +11,8 @@ public class Player extends Creature {
     @Override
     public void init(char levelDataChar, Script script) {
         String assignedEquipment = script.getAssignedEquipment(null);
-        equipmentString = assignedEquipment == null ? Util.randomizeEquipment() : assignedEquipment;
-        String partialFileName = "".equals(equipmentString) ? "pl" : "pl_" + equipmentString;
-        image = Util.loadElementImage(partialFileName);
-        initAttackDefense();
+        String equipmentString = assignedEquipment == null ? Util.randomizeEquipment() : assignedEquipment;
+        equip(equipmentString);
     }
 
     @Override
@@ -23,6 +21,12 @@ public class Player extends Creature {
     }
 
     @Override
-    protected void setDeadImage() {
+    protected String getDeadImage() {
+        return "pl_dead";
+    }
+
+    @Override
+    protected String getBodyImage() {
+        return "pl";
     }
 }

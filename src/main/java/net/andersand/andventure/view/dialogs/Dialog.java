@@ -4,7 +4,6 @@ import net.andersand.andventure.Const;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.Renderable;
-import net.andersand.andventure.view.GUIAccessor;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;

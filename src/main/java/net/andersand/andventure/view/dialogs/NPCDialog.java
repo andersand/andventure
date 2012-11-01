@@ -3,7 +3,6 @@ package net.andersand.andventure.view.dialogs;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.level.script.ExecutionResult;
-import net.andersand.andventure.view.GUIAccessor;
 import org.newdawn.slick.Image;
 
 import java.util.List;

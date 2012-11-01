@@ -6,19 +6,13 @@ import net.andersand.andventure.model.level.script.Script;
 /**
  * @author asn
  */
-public class Foe extends Creature implements Passable {
+public class Foe extends Creature {
     
-    public void setEquipmentString(String equipmentString) {
-        this.equipmentString = equipmentString;
-    }
-
     @Override
     public void init(char levelDataChar, Script script) {
         String assignedEquipment = script.getAssignedEquipment(position);
-        equipmentString = assignedEquipment != null ? assignedEquipment : Util.randomizeEquipment();
-        String partialFileName = "".equals(equipmentString) ? "en" : "en_" + equipmentString;
-        image = Util.loadElementImage(partialFileName);
-        initAttackDefense();
+        String equipmentString = assignedEquipment == null ? Util.randomizeEquipment() : assignedEquipment;
+        equip(equipmentString);
     }
 
     @Override
@@ -27,12 +21,13 @@ public class Foe extends Creature implements Passable {
     }
 
     @Override
-    protected void setDeadImage() {
-        image = Util.loadElementImage("en_dead");
+    protected String getDeadImage() {
+        return "en_dead";
     }
 
     @Override
-    public boolean isPassableNow() {
-        return dead; // allow walking over dead foes
+    protected String getBodyImage() {
+        return "en";
     }
+
 }

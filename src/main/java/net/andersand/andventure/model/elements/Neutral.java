@@ -4,7 +4,7 @@ import net.andersand.andventure.Util;
 import net.andersand.andventure.interactions.ComplexInteraction;
 import net.andersand.andventure.interactions.DialogInteraction;
 import net.andersand.andventure.interactions.Interaction;
-import net.andersand.andventure.interactions.SimpleInteration;
+import net.andersand.andventure.interactions.SimpleInteraction;
 import net.andersand.andventure.model.level.script.DialogStatement;
 import net.andersand.andventure.model.level.script.Script;
 import net.andersand.andventure.model.level.script.Statement;
@@ -24,7 +24,7 @@ public class Neutral extends Creature implements Interactable {
     @Override
     public void init(char levelDataChar, Script script) {
         initNPC(script);
-        image = Util.loadElementImage("n");
+        bodyImage = Util.loadElementImage("n");
     }
 
     private void initNPC(Script script) {
@@ -42,7 +42,13 @@ public class Neutral extends Creature implements Interactable {
     }
 
     @Override
-    protected void setDeadImage() {
+    protected String getDeadImage() {
+        return "nd"; // dead npc in spritesheet looks better ;-)
+    }
+
+    @Override
+    protected String getBodyImage() {
+        return "n";
     }
 
     /**
@@ -57,6 +63,6 @@ public class Neutral extends Creature implements Interactable {
                 return complexInteraction;
             }
         }
-        return SimpleInteration.INTERACTION_PERFORMED;
+        return SimpleInteraction.INTERACTION_PERFORMED;
     }
 }

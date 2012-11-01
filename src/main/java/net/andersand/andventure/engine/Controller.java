@@ -9,8 +9,10 @@ import net.andersand.andventure.model.elements.Player;
 import net.andersand.andventure.model.level.Level;
 import net.andersand.andventure.model.level.script.Statement;
 import net.andersand.andventure.view.GUI;
+import net.andersand.andventure.view.ScriptAccessor;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
 import java.util.List;
 
@@ -29,18 +31,20 @@ public class Controller {
     protected int currentLevelIndex = 0;
     protected Bounds windowBounds;
     protected GUI gui;
+    protected ScriptAccessor scriptAccessor;
     protected GameState gameState;
     protected ComplexInteraction complexInteraction;
 
-    public Controller(Bounds bounds, GUI gui) {
+    public Controller(Bounds bounds, GUI gui, ScriptAccessor scriptAccessor) {
         this.windowBounds = bounds;
         this.gui = gui;
+        this.scriptAccessor = scriptAccessor;
     }
 
     public void setLevels(List<Level> levels) {
         this.levels = levels;
     }
-    
+
     public void init() {
         gameState = GameState.INIT_COMPLETE;
     }
@@ -66,6 +70,7 @@ public class Controller {
         currentLevel = levels.get(currentLevelIndex);
         currentLevel.init(windowBounds);
         playerElement = currentLevel.getPlayer();
+        scriptAccessor.setPlayer(playerElement);
     }
 
     protected void displayBriefing(Level level) {
@@ -147,7 +152,7 @@ public class Controller {
         gui.renderBriefingDialog();
     }
 
-    public void renderLevel() {
+    public void renderLevel() throws SlickException {
         currentLevel.render();
     }
 

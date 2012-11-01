@@ -57,6 +57,9 @@ public class Util {
         return null;
     }
 
+    /**
+     * todo reimplement using Object classes for Inventory
+     */
     public static String randomizeEquipment() {
         char[] baseEquipment = "ash".toCharArray();
         byte letters2remove = (byte)(Math.random()*4); // 0-3

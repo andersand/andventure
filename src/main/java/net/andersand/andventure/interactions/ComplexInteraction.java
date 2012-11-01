@@ -1,6 +1,5 @@
 package net.andersand.andventure.interactions;
 
-import net.andersand.andventure.interactions.Interaction;
 import net.andersand.andventure.model.level.script.Statement;
 
 import java.util.List;

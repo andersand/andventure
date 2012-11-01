@@ -8,7 +8,7 @@ import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.objectives.*;
 import net.andersand.andventure.model.level.script.Script;
-import net.andersand.andventure.view.GUIAccessor;
+import net.andersand.andventure.view.ScriptAccessor;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -25,10 +25,10 @@ public class LevelParser {
     protected Map<String, Class<? extends Objective>> objectivesLookupTable = new HashMap<String, Class<? extends Objective>>();
     protected int tallestLevel;
     protected int widestLevel;
-    private GUIAccessor guiAccessor;
+    private ScriptAccessor scriptAccessor;
 
-    public LevelParser(GUIAccessor guiAccessor) {
-        this.guiAccessor = guiAccessor;
+    public LevelParser(ScriptAccessor scriptAccessor) {
+        this.scriptAccessor = scriptAccessor;
         populateLookupTables();
     }
 
@@ -91,7 +91,7 @@ public class LevelParser {
     }
 
     protected Script parseScript(List<String> scriptLines) throws IllegalAccessException, InstantiationException {
-        return new ScriptParser(guiAccessor).parse(scriptLines);
+        return new ScriptParser(scriptAccessor).parse(scriptLines);
     }
 
     public Meta parseMetaData(List<String> metaLines) throws IllegalAccessException, InstantiationException {

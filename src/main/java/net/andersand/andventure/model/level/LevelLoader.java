@@ -3,7 +3,7 @@ package net.andersand.andventure.model.level;
 import net.andersand.andventure.Const;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.engine.Bounds;
-import net.andersand.andventure.view.GUIAccessor;
+import net.andersand.andventure.view.ScriptAccessor;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +19,8 @@ public class LevelLoader {
     protected LevelParser levelParser;
     protected List<Level> levels = new ArrayList<Level>();
 
-    public LevelLoader(GUIAccessor guiAccessor) {
-        levelParser = new LevelParser(guiAccessor);
+    public LevelLoader(ScriptAccessor scriptAccessor) {
+        levelParser = new LevelParser(scriptAccessor);
     }
 
     public List<Level> getLevels() {

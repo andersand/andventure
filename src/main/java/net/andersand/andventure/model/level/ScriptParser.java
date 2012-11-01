@@ -2,7 +2,7 @@ package net.andersand.andventure.model.level;
 
 import net.andersand.andventure.Util;
 import net.andersand.andventure.model.level.script.*;
-import net.andersand.andventure.view.GUIAccessor;
+import net.andersand.andventure.view.ScriptAccessor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Map;
 public class ScriptParser {
 
     protected Map<String, Class<? extends Statement>> statementLookupTable = new HashMap<String, Class<? extends Statement>>();
-    private GUIAccessor guiAccessor;
+    private ScriptAccessor scriptAccessor;
 
-    public ScriptParser(GUIAccessor guiAccessor) {
+    public ScriptParser(ScriptAccessor scriptAccessor) {
         populateLookupTables();
-        this.guiAccessor = guiAccessor;
+        this.scriptAccessor = scriptAccessor;
     }
 
     private void populateLookupTables() {
@@ -44,7 +44,7 @@ public class ScriptParser {
         Class<? extends Statement> statementClass = statementLookupTable.get(statementString);
         if (statementClass != null) {
             Statement statement = statementClass.newInstance();
-            statement.setGuiAccessor(guiAccessor);
+            statement.setScriptAccessor(scriptAccessor);
             if (statement.usingValueWords()) {
                 statement.setValueWords(words);
             }

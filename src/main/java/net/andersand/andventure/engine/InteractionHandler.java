@@ -1,7 +1,7 @@
 package net.andersand.andventure.engine;
 
 import net.andersand.andventure.interactions.Interaction;
-import net.andersand.andventure.interactions.SimpleInteration;
+import net.andersand.andventure.interactions.SimpleInteraction;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.Level;
@@ -47,13 +47,13 @@ public class InteractionHandler {
         Element elementAtDestination = currentLevel.look(lookingDestination);
         if (elementAtDestination == null) {
             actor.move(changeX, changeY);
-            return SimpleInteration.MOVE_PERFORMED;
+            return SimpleInteraction.MOVE_PERFORMED;
         }
         if (elementAtDestination instanceof Passable) {
             Passable passable = (Passable) elementAtDestination;
             if (passable.isPassableNow()) {
                 actor.move(changeX, changeY);
-                return SimpleInteration.MOVE_PERFORMED;
+                return SimpleInteraction.MOVE_PERFORMED;
             }
         }
         if (elementAtDestination instanceof Interactable) {
@@ -62,7 +62,7 @@ public class InteractionHandler {
         if (elementAtDestination instanceof Foe) {
             actor.attack(elementAtDestination);
         }
-        return SimpleInteration.MOVE_PROHIBITED;
+        return SimpleInteraction.MOVE_PROHIBITED;
     }
 
     public boolean isMoveRequested() {

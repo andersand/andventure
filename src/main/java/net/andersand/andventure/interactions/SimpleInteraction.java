@@ -5,7 +5,7 @@ package net.andersand.andventure.interactions;
  * 
  * @author asn
  */
-public enum SimpleInteration implements Interaction {
+public enum SimpleInteraction implements Interaction {
     
     INTERACTION_PERFORMED,
     MOVE_PROHIBITED,

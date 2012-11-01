@@ -1,7 +1,5 @@
 package net.andersand.andventure.model.level.script;
 
-import net.andersand.andventure.model.Position;
-import net.andersand.andventure.view.GUIAccessor;
 import net.andersand.andventure.view.dialogs.NPCDialog;
 
 /**
@@ -15,7 +13,7 @@ public class DialogStatement extends Statement {
 
     @Override
     public ExecutionResult execute() {
-        return new NPCDialog(guiAccessor.getDialogPosition(), text, characterName, imageFileName);
+        return new NPCDialog(scriptAccessor.getDialogPosition(), text, characterName, imageFileName);
     }
 
     @Override

@@ -4,6 +4,7 @@ import net.andersand.andventure.Const;
 import net.andersand.andventure.Util;
 import net.andersand.andventure.model.level.LevelLoader;
 import net.andersand.andventure.view.GUI;
+import net.andersand.andventure.view.ScriptAccessor;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.*;
 
@@ -25,12 +26,14 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         GUI gui = new GUI();
-        LevelLoader levelLoader = new LevelLoader(gui);
+        ScriptAccessor scriptAccessor = new ScriptAccessor();
+        scriptAccessor.setGUI(gui);
+        LevelLoader levelLoader = new LevelLoader(scriptAccessor);
         Bounds bounds = levelLoader.loadLevels();
         bounds = Util.getAdjustedBounds(bounds);
         gui.init(bounds);
         appGameContainer.setDisplayMode(bounds.width, bounds.height, false);
-        controller = new Controller(bounds, gui);
+        controller = new Controller(bounds, gui, scriptAccessor);
         controller.setLevels(levelLoader.getLevels());
         controller.init();
     }
