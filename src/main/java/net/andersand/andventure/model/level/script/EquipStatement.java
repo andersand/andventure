@@ -1,6 +1,6 @@
 package net.andersand.andventure.model.level.script;
 
-import net.andersand.andventure.Util;
+import net.andersand.andventure.engine.Util;
 
 /**
  * @author asn

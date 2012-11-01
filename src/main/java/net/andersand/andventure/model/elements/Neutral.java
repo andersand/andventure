@@ -1,6 +1,6 @@
 package net.andersand.andventure.model.elements;
 
-import net.andersand.andventure.Util;
+import net.andersand.andventure.engine.Util;
 import net.andersand.andventure.interactions.ComplexInteraction;
 import net.andersand.andventure.interactions.DialogInteraction;
 import net.andersand.andventure.interactions.Interaction;

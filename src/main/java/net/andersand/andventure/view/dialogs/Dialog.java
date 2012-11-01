@@ -1,7 +1,7 @@
 package net.andersand.andventure.view.dialogs;
 
-import net.andersand.andventure.Const;
-import net.andersand.andventure.Util;
+import net.andersand.andventure.engine.Const;
+import net.andersand.andventure.engine.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.Renderable;
 import org.newdawn.slick.Color;
@@ -18,6 +18,8 @@ public abstract class Dialog implements Renderable {
     protected Position position;
     protected Font genericFont;
     protected String randomEmblemChar;
+    private int blinkFPS = Const.FPS;
+    private final static int BLINK_FRAME_WEND = Const.FPS * Const.TEXT_BLINK_RATE;
 
     protected void loadGenericFont() {
         genericFont = Util.loadFont("fatal-fury");
@@ -56,7 +58,16 @@ public abstract class Dialog implements Renderable {
     }
 
     protected void drawPressSpace() {
-        genericFont.drawString(position.getX() + Const.PAPER_WIDTH - 200, position.getY() + Const.PAPER_HEIGHT - 40, "Press space to begin", Color.black);
+        // make the text blink at a specific rate
+        if (blinkFPS < BLINK_FRAME_WEND/2) {
+            genericFont.drawString(position.getX() + Const.PAPER_WIDTH - 220, position.getY() + Const.PAPER_HEIGHT - 50, "Press space to continue", Color.black);
+        }
+        if (blinkFPS == 0) {
+            blinkFPS = BLINK_FRAME_WEND;
+        }
+        else {
+            blinkFPS--;
+        }
     }
 
     protected void drawImage() {

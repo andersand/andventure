@@ -1,7 +1,5 @@
 package net.andersand.andventure.engine;
 
-import net.andersand.andventure.Const;
-import net.andersand.andventure.Util;
 import net.andersand.andventure.model.level.LevelLoader;
 import net.andersand.andventure.view.GUI;
 import net.andersand.andventure.view.ScriptAccessor;

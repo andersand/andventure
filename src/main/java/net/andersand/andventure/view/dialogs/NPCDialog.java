@@ -1,6 +1,6 @@
 package net.andersand.andventure.view.dialogs;
 
-import net.andersand.andventure.Util;
+import net.andersand.andventure.engine.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.level.script.ExecutionResult;
 import org.newdawn.slick.Image;

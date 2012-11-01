@@ -1,5 +1,6 @@
 package net.andersand.andventure.model;
 
+import net.andersand.andventure.engine.Mapper;
 import net.andersand.andventure.model.elements.Object;
 import net.andersand.andventure.model.elements.Weapon;
 import net.andersand.andventure.model.elements.Wearable;
@@ -41,7 +42,7 @@ public class Inventory {
     private List<Class<? extends Object>> objectStringsToClass(String objectString) {
         List<Class<? extends Object>> queryObjects = new ArrayList<Class<? extends Object>>();
         for (int i = 0; i < objectString.length(); i++) {
-            queryObjects.add(InventoryLookup.lookup(String.valueOf(objectString.charAt(i))));
+            queryObjects.add(Mapper.lookupObject(String.valueOf(objectString.charAt(i))));
         }
         return queryObjects;
     }

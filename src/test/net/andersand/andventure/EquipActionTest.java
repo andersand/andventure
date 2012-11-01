@@ -1,5 +1,6 @@
 package net.andersand.andventure;
 
+import net.andersand.andventure.engine.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.level.script.EquipStatement;
 import net.andersand.andventure.model.level.script.Statement;

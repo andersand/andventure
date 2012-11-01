@@ -1,7 +1,7 @@
 package net.andersand.andventure.model.elements;
 
-import net.andersand.andventure.Const;
-import net.andersand.andventure.Util;
+import net.andersand.andventure.engine.Const;
+import net.andersand.andventure.engine.Util;
 import net.andersand.andventure.interactions.CreatureLevelInteraction;
 import net.andersand.andventure.model.Inventory;
 import net.andersand.andventure.model.Position;

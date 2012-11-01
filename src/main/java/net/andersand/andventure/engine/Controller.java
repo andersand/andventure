@@ -1,6 +1,5 @@
 package net.andersand.andventure.engine;
 
-import net.andersand.andventure.PropertyHolder;
 import net.andersand.andventure.interactions.ComplexInteraction;
 import net.andersand.andventure.interactions.DialogInteraction;
 import net.andersand.andventure.interactions.Interaction;

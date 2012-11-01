@@ -1,6 +1,6 @@
 package net.andersand.andventure;
 
-import net.andersand.andventure.model.elements.Foe;
+import net.andersand.andventure.engine.Util;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

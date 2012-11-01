@@ -1,4 +1,4 @@
-package net.andersand.andventure;
+package net.andersand.andventure.engine;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

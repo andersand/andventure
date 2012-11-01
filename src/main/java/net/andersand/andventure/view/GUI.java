@@ -1,7 +1,7 @@
 package net.andersand.andventure.view;
 
-import net.andersand.andventure.Const;
 import net.andersand.andventure.engine.Bounds;
+import net.andersand.andventure.engine.Const;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.Renderable;
 import net.andersand.andventure.model.level.Level;

@@ -1,9 +1,9 @@
 package net.andersand.andventure.model.level;
 
-import net.andersand.andventure.Const;
-import net.andersand.andventure.PropertyHolder;
-import net.andersand.andventure.Util;
 import net.andersand.andventure.engine.Bounds;
+import net.andersand.andventure.engine.Const;
+import net.andersand.andventure.engine.PropertyHolder;
+import net.andersand.andventure.engine.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.objectives.*;

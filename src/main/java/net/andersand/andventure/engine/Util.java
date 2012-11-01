@@ -1,6 +1,5 @@
-package net.andersand.andventure;
+package net.andersand.andventure.engine;
 
-import net.andersand.andventure.engine.Bounds;
 import net.andersand.andventure.model.Position;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;

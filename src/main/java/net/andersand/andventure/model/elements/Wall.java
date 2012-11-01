@@ -1,7 +1,7 @@
 package net.andersand.andventure.model.elements;
 
-import net.andersand.andventure.Const;
-import net.andersand.andventure.Util;
+import net.andersand.andventure.engine.Mapper;
+import net.andersand.andventure.engine.Util;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.level.script.Script;
 import org.newdawn.slick.Image;
@@ -38,7 +38,7 @@ public class Wall extends Structure implements ContiguousElement {
     }
 
     protected Position getSpriteOffset(String directionString) {
-        return Const.spriteWallOffsetMap.get(directionString);
+        return Mapper.getSpriteWallOffset(directionString);
     }
 
     @Override
