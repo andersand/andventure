@@ -2,6 +2,8 @@ package net.andersand.andventure.interactions;
 
 import net.andersand.andventure.model.level.script.Statement;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,7 +21,6 @@ public abstract class ComplexInteraction implements Interaction {
     }
 
     public void setStatements(List<Statement> statements) {
-        this.statements = statements;
-        getNextStatement(); // shift off the first statement to prevent double execution
+        this.statements = new ArrayList<Statement>(statements);
     }
 }

@@ -9,6 +9,7 @@ import net.andersand.andventure.model.level.script.DialogStatement;
 import net.andersand.andventure.model.level.script.Script;
 import net.andersand.andventure.model.level.script.Statement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
 public class Neutral extends Creature implements Interactable {
 
     protected List<Statement> npcStatements;
-    protected DialogStatement dialogStatement;
+    protected List<DialogStatement> dialogStatements;
 
     @Override
     public void init(char levelDataChar, Script script) {
@@ -29,10 +30,15 @@ public class Neutral extends Creature implements Interactable {
 
     private void initNPC(Script script) {
         this.npcStatements = script.initNPC(this);
+        dialogStatements = new ArrayList<DialogStatement>();
         for (Statement stat : npcStatements) {
             if (stat instanceof DialogStatement) {
-                dialogStatement = (DialogStatement)stat;
+                dialogStatements.add((DialogStatement) stat);
             }
+        }
+        // the npcStatements list should contain non-dialog statements only
+        for (DialogStatement statement : dialogStatements) {
+            npcStatements.remove(statement);
         }
     }
 
@@ -57,9 +63,10 @@ public class Neutral extends Creature implements Interactable {
     @Override
     public Interaction interact(Creature actor) {
         if (actor instanceof Player) {
-            if (dialogStatement != null) {
-                ComplexInteraction complexInteraction = new DialogInteraction(dialogStatement);
+            if (!dialogStatements.isEmpty()) {
+                ComplexInteraction complexInteraction = new DialogInteraction(dialogStatements.remove(0));
                 complexInteraction.setStatements(npcStatements);
+                npcStatements.clear(); // making sure only the first dialog interaction yields chained statements
                 return complexInteraction;
             }
         }
