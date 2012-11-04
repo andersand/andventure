@@ -12,39 +12,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../lib/lwjgl.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../../lib/full/lwjgl-2.8.4-src/src/generated" />
-          <root url="file://$MODULE_DIR$/../../lib/full/lwjgl-2.8.4-src/src/java" />
-          <root url="file://$MODULE_DIR$/../../lib/full/lwjgl-2.8.4-src/src/templates" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../lib/lwjgl_util.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../lib/slick.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../../lib/full/slick/src" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
@@ -52,6 +19,20 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../slick/trunk/Slick/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../../slick/trunk/Slick/lib" />
+          <root url="file://$MODULE_DIR$/../../../slick/trunk/Slick/src" />
+        </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/../../../slick/trunk/Slick/lib" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/../../../slick/trunk/Slick/lib" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
   </component>

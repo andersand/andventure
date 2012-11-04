@@ -10,5 +10,6 @@ public enum GameState {
     LEVEL_COMPLETE,
     SHOW_DIALOG,
     CHAINED_STATEMENT,
+    DEBRIEFING, 
     BRIEFING
 }

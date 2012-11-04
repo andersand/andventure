@@ -183,11 +183,15 @@ public class Level implements Renderable, CreatureLevelInteraction, ObjectiveLev
     }
 
     public Dialog getBriefing(Position dialogPosition) {
-        return new Briefing(dialogPosition, this);
+        Dialog d = new Briefing(dialogPosition, this);
+        d.setup();
+        return d;
     }
 
     public Dialog getDebriefing(Position dialogPositon) {
-        return new Debriefing(dialogPositon, this);
+        Dialog d = new Debriefing(dialogPositon, this);
+        d.setup();
+        return d;
     }
 
     public Script getScript() {

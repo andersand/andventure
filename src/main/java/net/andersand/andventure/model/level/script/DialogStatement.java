@@ -13,7 +13,9 @@ public class DialogStatement extends Statement {
 
     @Override
     public ExecutionResult execute() {
-        return new NPCDialog(scriptAccessor.getDialogPosition(), text, characterName, imageFileName);
+        NPCDialog dialog = new NPCDialog(scriptAccessor.getDialogPosition(), text, characterName, imageFileName);
+        dialog.setup();
+        return dialog;
     }
 
     @Override

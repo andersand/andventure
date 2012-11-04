@@ -10,11 +10,17 @@ import java.util.List;
  * @author asn
  */
 public class Meta {
+
     public List<Objective> objectives;
     public String name;
+    public String emblem;
     public String description;
     public String environment;
     public String debrief;
+
+    public String getEmblem() {
+        return emblem;
+    }
 
     public List<Objective> getObjectives() {
         return objectives;

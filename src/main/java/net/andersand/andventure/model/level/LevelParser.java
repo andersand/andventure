@@ -52,6 +52,7 @@ public class LevelParser {
             metaLookupTable.put("description", Meta.class.getField("description"));
             metaLookupTable.put("objectives", Meta.class.getField("objectives"));
             metaLookupTable.put("environment", Meta.class.getField("environment"));
+            metaLookupTable.put("emblem", Meta.class.getField("emblem"));
         }
         catch (NoSuchFieldException e) {
             e.printStackTrace();

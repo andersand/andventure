@@ -43,4 +43,9 @@ public class NPCDialog extends Dialog implements ExecutionResult {
     protected Image getImage() {
         return Util.loadImage("npc/" + imageFileName);
     }
+
+    @Override
+    protected String getEmblem() {
+        return null; // not applicable; NPCs have an image
+    }
 }

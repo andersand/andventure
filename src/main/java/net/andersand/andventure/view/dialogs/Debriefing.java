@@ -55,4 +55,9 @@ public class Debriefing extends Dialog {
     protected Image getImage() {
         return null;
     }
+
+    @Override
+    protected String getEmblem() {
+        return level.getMeta().getEmblem();
+    }
 }

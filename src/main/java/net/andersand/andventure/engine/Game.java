@@ -38,6 +38,7 @@ public class Game extends BasicGame {
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
+        Util.log("update : " + controller.getGameState());
         controller.handleUserInput(container);
         switch (controller.getGameState()) {
             case IN_GAME:
@@ -60,6 +61,7 @@ public class Game extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
+        Util.log("render : " + controller.getGameState());
         switch (controller.getGameState()) {
             case IN_GAME :
                 // intentional fall through
@@ -70,6 +72,8 @@ public class Game extends BasicGame {
                 controller.renderLevel();
                 controller.renderDialog();
                 break;
+            case DEBRIEFING:
+                // intentional fall through
             case BRIEFING:
                 controller.renderBriefing();
                 break;

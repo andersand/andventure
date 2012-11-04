@@ -19,20 +19,20 @@ import java.util.List;
  * Game controller.
  * Purpose: The "brain" class, that knows what happens next,
  * exists primarily to prevent Game class from growing out of hand
- * 
+ *
  * @author asn
  */
 public class Controller {
     
-    protected List<Level> levels;
-    protected Level currentLevel;
-    protected Player playerElement; // Consider a between-levels persistent non-Element "Player" class
-    protected int currentLevelIndex = 0;
-    protected Bounds windowBounds;
-    protected GUI gui;
-    protected ScriptAccessor scriptAccessor;
-    protected GameState gameState;
-    protected ComplexInteraction complexInteraction;
+    private List<Level> levels;
+    private Level currentLevel;
+    private Player playerElement; // Consider a between-levels persistent non-Element "Player" class
+    private int currentLevelIndex = -1;
+    private Bounds windowBounds;
+    private GUI gui;
+    private ScriptAccessor scriptAccessor;
+    private GameState gameState;
+    private ComplexInteraction complexInteraction;
 
     public Controller(Bounds bounds, GUI gui, ScriptAccessor scriptAccessor) {
         this.windowBounds = bounds;
@@ -70,6 +70,7 @@ public class Controller {
         currentLevel.init(windowBounds);
         playerElement = currentLevel.getPlayer();
         scriptAccessor.setPlayer(playerElement);
+        gameState = GameState.IN_GAME;
     }
 
     protected void displayBriefing(Level level) {
@@ -77,9 +78,9 @@ public class Controller {
         gameState = GameState.BRIEFING;
     }
     
-    protected void displayDebriefing(Level level) {
-        gui.createDebriefing(level);
-        gameState = GameState.BRIEFING;
+    protected void displayDebriefing() {
+        gui.createDebriefing(currentLevel);
+        gameState = GameState.DEBRIEFING;
     }
 
     public void handlePlayerInput(GameContainer container) {
@@ -103,12 +104,18 @@ public class Controller {
     public void handleUserInput(GameContainer container) {
         Input input = container.getInput();
 
-        if (gameState.equals(GameState.BRIEFING) && input.isKeyDown(Input.KEY_SPACE)) {
-            gameState = GameState.IN_GAME;
-            startLevel();
-        }
-        else if (gameState.equals(GameState.SHOW_DIALOG) && input.isKeyDown(Input.KEY_SPACE)) {
-            gameState = GameState.CHAINED_STATEMENT;
+        if (input.isKeyPressed(Input.KEY_SPACE)) {
+            switch (gameState) {
+                case BRIEFING:
+                    gotoNextLevel();
+                    break;
+                case DEBRIEFING:
+                    displayBriefing(levels.get(currentLevelIndex+1));
+                    break;
+                case SHOW_DIALOG:
+                    gameState = GameState.CHAINED_STATEMENT;
+                    break;
+            }
         }
         else if (input.isKeyPressed(Input.KEY_Q)) {
             System.exit(0); // todo LOW Quit game more nicely
@@ -128,7 +135,7 @@ public class Controller {
 
     public void performAI() {
         for (Creature c : currentLevel.getCreaturesAI()) {
-           c.move();
+            c.move();
         }
     }
 
@@ -143,8 +150,7 @@ public class Controller {
     }
 
     public void endLevel() {
-        displayDebriefing(currentLevel);
-        currentLevelIndex++;
+        displayDebriefing();
     }
 
     public void renderBriefing() {
