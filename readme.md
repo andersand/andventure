@@ -1,4 +1,4 @@
-AndVenture ![Logo](logo.png)
+AndVenture ![Logo](https://raw.github.com/andersand/andventure/master/logo.png)
 ==========
 
 Yet Another Adventure Game, mostly making this to learn. 
