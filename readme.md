@@ -1,7 +1,7 @@
-AndVenture
+AndVenture ![Logo](logo.png)
 ==========
 
-Yet Another Adventure Game, mostly making this to learn.
+Yet Another Adventure Game, mostly making this to learn. 
 
 Technical details
 -----------------
