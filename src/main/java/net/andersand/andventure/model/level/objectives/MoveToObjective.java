@@ -12,6 +12,13 @@ public class MoveToObjective extends Objective {
     
     @Override
     protected boolean isObjectiveCompleted(ObjectiveLevelInteraction objectiveLevelInteraction) {
-        return false;  // this objective type needs access to player.position
+        return objectiveLevelInteraction.getPlayerPosition().equals(getTarget());
+    }
+
+    private Position getTarget() {
+        if (target == null) {
+            target = Position.parsePosition(value);
+        }
+        return target;
     }
 }

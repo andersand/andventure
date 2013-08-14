@@ -15,8 +15,6 @@ public abstract class Objective {
     
     protected boolean completed;
     protected String value;
-    protected Position destination;
-    protected ObjectiveLevelInteraction objectiveLevelInteraction;
     
     public void setValue(String objectiveValue) {
         this.value = objectiveValue;

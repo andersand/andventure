@@ -54,4 +54,11 @@ public class Position {
         x += xMod;
         y += yMod;
     }
+
+    public static Position parsePosition(String positionStr) {
+        String[] parts = positionStr.split("x");
+        int x = Integer.parseInt(parts[0]);
+        int y = Integer.parseInt(parts[1]);
+        return new Position(x, y);
+    }
 }

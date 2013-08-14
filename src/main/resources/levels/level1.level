@@ -2,7 +2,7 @@ wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww-wwwwwwwwwwwwwwwwwwwwwwwwww
 w     c c                          w                w         c c    w
 w                         TT       w                w        TTTT    w
 w                        cTT      cw                w        TTTT    w
-w        p               cTT       w   c            w        c c     w
+w        p               cTT       w   c       f    w        c c     w
 w                         TT       w                w                w
 w                                  |       f        |         c c    w
 w                                  w                w        TTTT    w
@@ -21,7 +21,7 @@ wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 
 ?META name=Tavern
 ?META description=You wake up, not remembering how you got there... Let's get out of here!
-?META objectives=defeatAllFoes
+?META objectives=moveTo@43x0
 
 ?SCRIPT equip player ""
 ?SCRIPT equip 43x6 "a"
