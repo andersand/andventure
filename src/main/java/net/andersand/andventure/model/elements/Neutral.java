@@ -1,10 +1,10 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.engine.Util;
-import net.andersand.andventure.interactions.ComplexInteraction;
-import net.andersand.andventure.interactions.DialogInteraction;
-import net.andersand.andventure.interactions.Interaction;
-import net.andersand.andventure.interactions.SimpleInteraction;
+import net.andersand.andventure.model.interactions.ComplexInteraction;
+import net.andersand.andventure.model.interactions.DialogInteraction;
+import net.andersand.andventure.model.interactions.Interaction;
+import net.andersand.andventure.model.interactions.SimpleInteraction;
 import net.andersand.andventure.model.level.script.DialogStatement;
 import net.andersand.andventure.model.level.script.Script;
 import net.andersand.andventure.model.level.script.Statement;

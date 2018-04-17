@@ -2,7 +2,7 @@ package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.engine.Const;
 import net.andersand.andventure.engine.Util;
-import net.andersand.andventure.interactions.CreatureLevelInteraction;
+import net.andersand.andventure.model.interactions.CreatureLevelInteraction;
 import net.andersand.andventure.model.Inventory;
 import net.andersand.andventure.model.Position;
 import org.newdawn.slick.Image;
@@ -15,7 +15,7 @@ import org.newdawn.slick.SlickException;
  */
 public abstract class Creature extends Element implements Passable  {
     
-    protected Position goal;
+    protected Position target;
     protected CreatureLevelInteraction creatureLevelInteraction;
     protected Image bodyImage;
     protected Inventory inventory;
@@ -81,22 +81,31 @@ public abstract class Creature extends Element implements Passable  {
      * AI main method
      * --------------
      * Strategy:
-     * 1. Does the creature have a goal? 
-     *    --> Move towards goal position
-     *    Goals are typically set when
+     * 1. Does the creature have a target? 
+     *    --> Move towards target position
+     *    Targets are typically set when
      *    - Player is spotted
      *    - Creature is patrolling on a route
      * 2. Is the creature just idling? 
      *    --> Move randomly or stay still depending on Chance to move
-     *    - If creature is anchored to a position (ie guarding) it will not stray far from that
+     *    - If creature is anchored to a position (ie guarding) it will not stray far
      */
     public void move() {
         if (dead || preventMove()) {
             return;
         }
-        if (goal == null) {
+        if (target == null) {
             idle();
         }
+        else {
+            moveTowardsTarget();
+        }
+    }
+
+    protected void moveTowardsTarget() {
+        // assumes target is defined
+        int changeX = position.getX() > target.getX() ? 1 : (position.getX() == target.getX() ? 0 : -1);
+        int changeY = position.getY() > target.getY() ? 1 : (position.getY() == target.getY() ? 0 : -1);
     }
 
     protected void idle() {

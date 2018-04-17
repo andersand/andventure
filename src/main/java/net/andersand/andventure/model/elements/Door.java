@@ -1,8 +1,8 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.engine.Util;
-import net.andersand.andventure.interactions.Interaction;
-import net.andersand.andventure.interactions.SimpleInteraction;
+import net.andersand.andventure.model.interactions.Interaction;
+import net.andersand.andventure.model.interactions.SimpleInteraction;
 import net.andersand.andventure.model.level.script.Script;
 import org.newdawn.slick.Image;
 

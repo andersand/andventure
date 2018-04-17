@@ -1,6 +1,6 @@
 package net.andersand.andventure.model.level.objectives;
 
-import net.andersand.andventure.interactions.ObjectiveLevelInteraction;
+import net.andersand.andventure.model.interactions.ObjectiveLevelInteraction;
 
 /**
  * @author asn

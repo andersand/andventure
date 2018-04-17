@@ -1,7 +1,7 @@
 package net.andersand.andventure.model.elements;
 
 import net.andersand.andventure.engine.Util;
-import net.andersand.andventure.interactions.ElementLevelInteraction;
+import net.andersand.andventure.model.interactions.ElementLevelInteraction;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.Renderable;
 import net.andersand.andventure.model.level.script.Script;

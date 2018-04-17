@@ -1,6 +1,6 @@
 package net.andersand.andventure.model.elements;
 
-import net.andersand.andventure.interactions.Interaction;
+import net.andersand.andventure.model.interactions.Interaction;
 
 /**
  * @author asn

@@ -1,7 +1,7 @@
 package net.andersand.andventure.engine;
 
-import net.andersand.andventure.interactions.Interaction;
-import net.andersand.andventure.interactions.SimpleInteraction;
+import net.andersand.andventure.model.interactions.Interaction;
+import net.andersand.andventure.model.interactions.SimpleInteraction;
 import net.andersand.andventure.model.Position;
 import net.andersand.andventure.model.elements.*;
 import net.andersand.andventure.model.level.Level;

@@ -1,8 +1,8 @@
 package net.andersand.andventure.engine;
 
-import net.andersand.andventure.interactions.ComplexInteraction;
-import net.andersand.andventure.interactions.DialogInteraction;
-import net.andersand.andventure.interactions.Interaction;
+import net.andersand.andventure.model.interactions.ComplexInteraction;
+import net.andersand.andventure.model.interactions.DialogInteraction;
+import net.andersand.andventure.model.interactions.Interaction;
 import net.andersand.andventure.model.elements.Creature;
 import net.andersand.andventure.model.elements.Player;
 import net.andersand.andventure.model.level.Level;
