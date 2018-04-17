@@ -18,6 +18,7 @@ public class AndVenture {
             Game g = new Game();
             AppGameContainer container = new AppGameContainer(g);
             g.setAppContainer(container);
+            container.setIcons(new String[] {"logo.png"});
             container.start();
         }
         catch (SlickException e) {
